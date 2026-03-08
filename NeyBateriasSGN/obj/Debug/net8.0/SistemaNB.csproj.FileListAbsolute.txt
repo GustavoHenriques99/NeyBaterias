@@ -1,0 +1,14 @@
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\bin\Debug\net8.0\SistemaNB.exe
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\bin\Debug\net8.0\SistemaNB.deps.json
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\bin\Debug\net8.0\SistemaNB.runtimeconfig.json
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\bin\Debug\net8.0\SistemaNB.dll
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\bin\Debug\net8.0\SistemaNB.pdb
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\SistemaNB.GeneratedMSBuildEditorConfig.editorconfig
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\SistemaNB.AssemblyInfoInputs.cache
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\SistemaNB.AssemblyInfo.cs
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\SistemaNB.csproj.CoreCompileInputs.cache
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\SistemaNB.dll
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\refint\SistemaNB.dll
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\SistemaNB.pdb
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\SistemaNB.genruntimeconfig.cache
+C:\NeyBaterias\NeyBateriasSGN\SistemaNB\obj\Debug\net8.0\ref\SistemaNB.dll
