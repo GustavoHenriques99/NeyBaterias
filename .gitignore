@@ -1,0 +1,28 @@
+
+# Pastas de build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Arquivos temporários
+*.tmp
+~$*
+
+# Logs
+*.log
+
+# Configurações locais
+*.local
+
+# Cache
+*.cache
+
+# Sistema
+Thumbs.db
+.DS_Store
