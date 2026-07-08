@@ -1,0 +1,6 @@
+@NeyBaterias.API_HostAddress = http://localhost:5114
+
+GET {{NeyBaterias.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

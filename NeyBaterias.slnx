@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/NeyBaterias.API/NeyBaterias.API.csproj" />
+    <Project Path="src/NeyBaterias.Application/NeyBaterias.Application.csproj" />
+    <Project Path="src/NeyBaterias.Domain/NeyBaterias.Domain.csproj" />
+    <Project Path="src/NeyBaterias.Infrastructure/NeyBaterias.Infrastructure.csproj" />
+  </Folder>
+</Solution>
