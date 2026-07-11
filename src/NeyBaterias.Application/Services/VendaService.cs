@@ -24,7 +24,7 @@ public class VendaService : IVendaService
             ?? throw new InvalidOperationException("Cliente não encontrado.");
 
         var operador = await _uow.Operador.GetByIdAsync(dto.IdOperador)
-            ?? throw new InvalidOperationException("Usuário não encontrado.");
+            ?? throw new InvalidOperationException("Operador não encontrado.");
 
         var pagamento = await _uow.FormasPagamento.GetByIdAsync(dto.IdPagamento)
             ?? throw new InvalidOperationException("Forma de pagamento não encontrada.");
@@ -56,16 +56,12 @@ public class VendaService : IVendaService
                 PrecoVenda = itemDto.PrecoVenda
             };
 
-            // Somente Produtos geram movimentação de estoque (Serviços não têm estoque físico)
             if (item.Tipo == TipoItem.Produto && item.Produto is not null)
             {
-                if (item.Produto is not null)
-                {
-                    var estoqueAtual = await ObterSaldoEstoqueAsync(item.Produto.IdProduto);
-                    if (estoqueAtual < itemDto.Qtd)
-                        throw new InvalidOperationException(
-                            $"Estoque insuficiente para o produto '{item.Produto.Descricao}'. Saldo atual: {estoqueAtual}.");
-                }
+                var estoqueAtual = await ObterSaldoEstoqueAsync(item.Produto.IdProduto);
+                if (estoqueAtual < itemDto.Qtd)
+                    throw new InvalidOperationException(
+                        $"Estoque insuficiente para o produto '{item.Produto.Descricao}'. Saldo atual: {estoqueAtual}.");
 
                 itemVenda.MovimentoEstoque = new Estoque
                 {

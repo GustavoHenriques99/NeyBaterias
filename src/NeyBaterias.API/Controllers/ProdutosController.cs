@@ -15,22 +15,51 @@ public class ProdutosController : ControllerBase
 
     public ProdutosController(IUnitOfWork uow) => _uow = uow;
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Produto>>> GetAll() =>
-        Ok(await _uow.Produtos.Query().Include(p => p.Item).ToListAsync());
+     [HttpGet]
+    public async Task<ActionResult<IEnumerable<ProdutoRespostaDto>>> GetAll()
+    {
+        var produtos = await _uow.Produtos.Query().Include(p => p.Item).ToListAsync();
+
+        var resposta = produtos.Select(p => new ProdutoRespostaDto
+        {
+            IdProduto = p.IdProduto,
+            Descricao = p.Descricao,
+            Amperagem = p.Amperagem,
+            Marca = p.Marca,
+            Modelo = p.Modelo,
+            PrecoCusto = p.PrecoCusto,
+            PrecoVenda = p.PrecoVenda
+        });
+
+        return Ok(resposta);
+    }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Produto>> GetById(int id)
+    public async Task<ActionResult<ProdutoRespostaDto>> GetById(int id)
     {
         var produto = await _uow.Produtos.Query()
             .Include(p => p.Item)
             .FirstOrDefaultAsync(p => p.IdProduto == id);
 
-        return produto is null ? NotFound() : Ok(produto);
+        if (produto is null) return NotFound();
+
+        var resposta = new ProdutoRespostaDto
+        {
+            IdProduto = produto.IdProduto,
+            Descricao = produto.Descricao,
+            Amperagem = produto.Amperagem,
+            Marca = produto.Marca,
+            Modelo = produto.Modelo,
+            PrecoCusto = produto.PrecoCusto,
+            PrecoVenda = produto.PrecoVenda
+        };
+
+        return Ok(resposta);
     }
 
+
     [HttpPost]
-    public async Task<ActionResult<Produto>> Create(CriarProdutoDto dto)
+    public async Task<ActionResult<ProdutoRespostaDto>> Create(CriarProdutoDto dto)
     {
         var item = new Item
         {
@@ -51,7 +80,19 @@ public class ProdutosController : ControllerBase
 
         await _uow.Itens.AddAsync(item);
         await _uow.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetById), new { id = item.Produto.IdProduto }, item.Produto);
+
+        var resposta = new ProdutoRespostaDto
+        {
+            IdProduto = item.Produto.IdProduto,
+            Descricao = item.Produto.Descricao,
+            Amperagem = item.Produto.Amperagem,
+            Marca = item.Produto.Marca,
+            Modelo = item.Produto.Modelo,
+            PrecoCusto = item.Produto.PrecoCusto,
+            PrecoVenda = item.Produto.PrecoVenda
+        };
+
+        return CreatedAtAction(nameof(GetById), new { id = resposta.IdProduto }, resposta);
     }
 
     // Retorna o saldo atual em estoque do produto (entradas - saídas)

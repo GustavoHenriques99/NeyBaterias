@@ -26,6 +26,9 @@ public class OperadorController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Operador>> Create(Operador operador)
     {
+        // Nunca salvamos a senha em texto puro — gera o hash antes de persistir
+        operador.Senha = BCrypt.Net.BCrypt.HashPassword(operador.Senha);
+
         await _uow.Operador.AddAsync(operador);
         await _uow.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = operador.IdOperador }, operador);

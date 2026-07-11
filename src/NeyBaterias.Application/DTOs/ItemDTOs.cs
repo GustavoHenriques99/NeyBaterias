@@ -18,3 +18,12 @@ public class CriarServicoDto
     public decimal Preco { get; set; }
     public int TempoEstimado { get; set; }
 }
+
+
+public class ItemRespostaDto
+{
+    public int IdItem { get; set; }
+    public string Descricao { get; set; } = string.Empty;
+    public decimal Valor { get; set; }
+    public string Tipo { get; set; } = string.Empty; // "Produto" ou "Servico"
+}

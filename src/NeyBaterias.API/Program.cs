@@ -7,7 +7,13 @@ using NeyBaterias.Infrastructure.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Controllers + Swagger
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        }
+    );
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -23,12 +29,36 @@ builder.Services.AddDbContext<NeyBateriasDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IVendaService, VendaService>();
 builder.Services.AddScoped<ICompraReposicaoService, CompraReposicaoService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // CORS liberado para desenvolvimento (ajustar em produção)
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
+
+//Configurações de Autenticação
+var jwtKey = builder.Configuration["Jwt:Key"]!;
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+            System.Text.Encoding.UTF8.GetBytes(jwtKey))
+    };
 });
 
 var app = builder.Build();
