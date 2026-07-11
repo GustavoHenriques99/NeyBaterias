@@ -10,6 +10,9 @@ import CadastroVenda from "./pages/CadastroVenda";
 import ListaServico from "./pages/ListaServico";
 import CadastroServico from "./pages/CadastroServico";
 import Estoque from "./pages/Estoque";
+import ListaFornecedor from "./pages/ListaFornecedor";
+import CadastroFornecedor from "./pages/CadastroFornecedor";
+import CadastroReposicao from "./pages/CadastroReposicao";
 
 function App() {
   return (
@@ -25,6 +28,9 @@ function App() {
         <Route path="/clientes/novo" element={<CadastroCliente />} />
         <Route path="/vendas" element={<ListaVenda />} />
         <Route path="/vendas/novo" element={<CadastroVenda />} />
+        <Route path="/fornecedores" element={<ListaFornecedor />} />
+        <Route path="/fornecedores/novo" element={<CadastroFornecedor />} />
+        <Route path="/reposicoes/novo" element={<CadastroReposicao />} />
       </Route>
     </Routes>
   );

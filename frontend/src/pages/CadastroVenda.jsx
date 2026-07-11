@@ -25,10 +25,16 @@ function CadastroVenda() {
   const [idOperador, setIdOperador] = useState("");
   const [idPagamento, setIdPagamento] = useState("");
   const [desconto, setDesconto] = useState(0);
-  const [carrinho, setCarrinho] = useState([]);
 
-  const [idItemSelecionado, setIdItemSelecionado] = useState("");
-  const [qtdSelecionada, setQtdSelecionada] = useState(1);
+  // Carrinhos separados: produtos e serviços
+  const [carrinhoProdutos, setCarrinhoProdutos] = useState([]);
+  const [carrinhoServicos, setCarrinhoServicos] = useState([]);
+
+  const [idProdutoSelecionado, setIdProdutoSelecionado] = useState("");
+  const [qtdProduto, setQtdProduto] = useState(1);
+
+  const [idServicoSelecionado, setIdServicoSelecionado] = useState("");
+  const [qtdServico, setQtdServico] = useState(1);
 
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState(null);
@@ -46,17 +52,19 @@ function CadastroVenda() {
       .finally(() => setCarregando(false));
   }, []);
 
-  function adicionarItem() {
-    if (!idItemSelecionado || qtdSelecionada <= 0) return;
+  const produtosDisponiveis = itensDisponiveis.filter((i) => i.tipo === "Produto");
+  const servicosDisponiveis = itensDisponiveis.filter((i) => i.tipo === "Servico");
 
-    const item = itensDisponiveis.find((i) => i.idItem === Number(idItemSelecionado));
-    if (!item) return;
+  const servicoSelecionado = servicosDisponiveis.find(
+    (s) => s.idItem === Number(idServicoSelecionado)
+  );
 
+  function adicionarNoCarrinho(setCarrinho, item, qtd) {
     setCarrinho((atual) => {
       const existente = atual.find((i) => i.idItem === item.idItem);
       if (existente) {
         return atual.map((i) =>
-          i.idItem === item.idItem ? { ...i, qtd: i.qtd + Number(qtdSelecionada) } : i
+          i.idItem === item.idItem ? { ...i, qtd: i.qtd + Number(qtd) } : i
         );
       }
       return [
@@ -64,26 +72,48 @@ function CadastroVenda() {
         {
           idItem: item.idItem,
           descricao: item.descricao,
-          qtd: Number(qtdSelecionada),
+          qtd: Number(qtd),
           precoVenda: item.valor,
         },
       ];
     });
-
-    setIdItemSelecionado("");
-    setQtdSelecionada(1);
   }
 
-  function removerItem(idItem) {
-    setCarrinho((atual) => atual.filter((i) => i.idItem !== idItem));
+  function adicionarProduto() {
+    if (!idProdutoSelecionado || qtdProduto <= 0) return;
+    const item = produtosDisponiveis.find((i) => i.idItem === Number(idProdutoSelecionado));
+    if (!item) return;
+
+    adicionarNoCarrinho(setCarrinhoProdutos, item, qtdProduto);
+    setIdProdutoSelecionado("");
+    setQtdProduto(1);
   }
 
-  function atualizarPrecoItem(idItem, novoPreco) {
-    setCarrinho((atual) =>
+  function adicionarServico() {
+    if (!idServicoSelecionado || qtdServico <= 0) return;
+    const item = servicosDisponiveis.find((i) => i.idItem === Number(idServicoSelecionado));
+    if (!item) return;
+
+    adicionarNoCarrinho(setCarrinhoServicos, item, qtdServico);
+    setIdServicoSelecionado("");
+    setQtdServico(1);
+  }
+
+  function removerProduto(idItem) {
+    setCarrinhoProdutos((atual) => atual.filter((i) => i.idItem !== idItem));
+  }
+
+  function removerServico(idItem) {
+    setCarrinhoServicos((atual) => atual.filter((i) => i.idItem !== idItem));
+  }
+
+  function atualizarPrecoProduto(idItem, novoPreco) {
+    setCarrinhoProdutos((atual) =>
       atual.map((i) => (i.idItem === idItem ? { ...i, precoVenda: Number(novoPreco) } : i))
     );
   }
 
+  const carrinho = [...carrinhoProdutos, ...carrinhoServicos];
   const subtotal = carrinho.reduce((soma, i) => soma + i.qtd * i.precoVenda, 0);
   const total = subtotal - Number(desconto || 0);
 
@@ -178,39 +208,40 @@ function CadastroVenda() {
           </div>
         </div>
 
+        {/* Bloco de Produtos */}
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-sm font-semibold text-slate-700 mb-3">Itens da Venda</h2>
 
           <div className="flex gap-2 mb-4">
             <select
-              value={idItemSelecionado}
-              onChange={(e) => setIdItemSelecionado(e.target.value)}
+              value={idProdutoSelecionado}
+              onChange={(e) => setIdProdutoSelecionado(e.target.value)}
               className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Selecione um item...</option>
-              {itensDisponiveis.map((i) => (
+              {produtosDisponiveis.map((i) => (
                 <option key={i.idItem} value={i.idItem}>
-                  {i.descricao} — {formatarMoeda(i.valor)} ({i.tipo})
+                  {i.descricao} — {formatarMoeda(i.valor)}
                 </option>
               ))}
             </select>
             <input
               type="number"
               min="1"
-              value={qtdSelecionada}
-              onChange={(e) => setQtdSelecionada(e.target.value)}
+              value={qtdProduto}
+              onChange={(e) => setQtdProduto(e.target.value)}
               className="w-20 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
               type="button"
-              onClick={adicionarItem}
+              onClick={adicionarProduto}
               className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-700"
             >
               Adicionar
             </button>
           </div>
 
-          {carrinho.length > 0 ? (
+          {carrinhoProdutos.length > 0 ? (
             <table className="w-full text-sm">
               <thead className="text-left text-slate-500 border-b">
                 <tr>
@@ -222,7 +253,7 @@ function CadastroVenda() {
                 </tr>
               </thead>
               <tbody>
-                {carrinho.map((i) => (
+                {carrinhoProdutos.map((i) => (
                   <tr key={i.idItem} className="border-b last:border-0">
                     <td className="py-2">{i.descricao}</td>
                     <td className="py-2">{i.qtd}</td>
@@ -231,7 +262,7 @@ function CadastroVenda() {
                         type="number"
                         step="0.01"
                         value={i.precoVenda}
-                        onChange={(e) => atualizarPrecoItem(i.idItem, e.target.value)}
+                        onChange={(e) => atualizarPrecoProduto(i.idItem, e.target.value)}
                         className="w-24 border border-slate-300 rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </td>
@@ -239,7 +270,7 @@ function CadastroVenda() {
                     <td className="py-2">
                       <button
                         type="button"
-                        onClick={() => removerItem(i.idItem)}
+                        onClick={() => removerProduto(i.idItem)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Trash2 size={16} />
@@ -251,6 +282,85 @@ function CadastroVenda() {
             </table>
           ) : (
             <p className="text-sm text-slate-400">Nenhum item adicionado ainda.</p>
+          )}
+        </div>
+
+        {/* Bloco de Serviço, separado dos produtos */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h2 className="text-sm font-semibold text-slate-700 mb-3">Serviço</h2>
+
+          <div className="flex gap-2 mb-1 items-end">
+            <select
+              value={idServicoSelecionado}
+              onChange={(e) => setIdServicoSelecionado(e.target.value)}
+              className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Selecione um item...</option>
+              {servicosDisponiveis.map((i) => (
+                <option key={i.idItem} value={i.idItem}>
+                  {i.descricao}
+                </option>
+              ))}
+            </select>
+
+            <div>
+              <label className="block text-xs text-slate-400 mb-1 text-center">
+                R$ (cadastrado)
+              </label>
+              <div className="w-24 border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-sm text-center text-slate-600">
+                {servicoSelecionado ? formatarMoeda(servicoSelecionado.valor) : "—"}
+              </div>
+            </div>
+
+            <input
+              type="number"
+              min="1"
+              value={qtdServico}
+              onChange={(e) => setQtdServico(e.target.value)}
+              className="w-20 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="button"
+              onClick={adicionarServico}
+              className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-700"
+            >
+              Adicionar
+            </button>
+          </div>
+
+          {carrinhoServicos.length > 0 ? (
+            <table className="w-full text-sm mt-3">
+              <thead className="text-left text-slate-500 border-b">
+                <tr>
+                  <th className="py-2">Serviço</th>
+                  <th className="py-2">Qtd</th>
+                  <th className="py-2">Preço</th>
+                  <th className="py-2">Subtotal</th>
+                  <th className="py-2"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {carrinhoServicos.map((i) => (
+                  <tr key={i.idItem} className="border-b last:border-0">
+                    <td className="py-2">{i.descricao}</td>
+                    <td className="py-2">{i.qtd}</td>
+                    <td className="py-2">{formatarMoeda(i.precoVenda)}</td>
+                    <td className="py-2">{formatarMoeda(i.qtd * i.precoVenda)}</td>
+                    <td className="py-2">
+                      <button
+                        type="button"
+                        onClick={() => removerServico(i.idItem)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="text-sm text-slate-400 mt-2">Nenhum item adicionado ainda.</p>
           )}
         </div>
 

@@ -45,6 +45,24 @@ export function getMovimentosPorProduto(idProduto) {
   return get(`/estoque/movimentos/produto/${idProduto}`);
 }
 
+// Funções de fornecedores
+export function getFornecedores() {
+  return get("/fornecedores");
+}
+
+export function criarFornecedor(dados) {
+  return post("/fornecedores", dados);
+}
+
+// Funções de compra de reposição (entrada de estoque)
+export function getComprasReposicao() {
+  return get("/comprasreposicao");
+}
+
+export function criarCompraReposicao(dados) {
+  return post("/comprasreposicao", dados);
+}
+
 export function criarProduto(dados) {
   return post("/produtos", dados);
 }

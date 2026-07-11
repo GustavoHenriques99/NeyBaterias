@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowDownCircle, ArrowUpCircle, AlertTriangle } from "lucide-react";
 import { getSaldoEstoque, getMovimentosEstoque } from "../services/api";
 
@@ -41,7 +42,15 @@ function Estoque() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-slate-800 mb-4">Estoque</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold text-slate-800">Estoque</h1>
+        <Link
+          to="/reposicoes/novo"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700"
+        >
+          + Nova Reposição
+        </Link>
+      </div>
 
       {/* Saldo por produto */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
