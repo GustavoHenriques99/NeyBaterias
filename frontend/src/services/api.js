@@ -37,8 +37,24 @@ export function getSaldoEstoque() {
   return get("/estoque/saldo");
 }
 
+export function getMovimentosEstoque() {
+  return get("/estoque/movimentos");
+}
+
+export function getMovimentosPorProduto(idProduto) {
+  return get(`/estoque/movimentos/produto/${idProduto}`);
+}
+
 export function criarProduto(dados) {
   return post("/produtos", dados);
+}
+
+export function getServicos() {
+  return get("/servicos");
+}
+
+export function criarServico(dados) {
+  return post("/servicos", dados);
 }
 
 
@@ -53,4 +69,21 @@ export function criarClienteFisico(dados) {
 
 export function criarClienteJuridico(dados) {
   return post("/clientes/juridico", dados);
+}
+
+// Funções de vendas
+export function criarVenda(dados) {
+  return post("/vendas", dados);
+}
+
+export function getOperadores() {
+  return get("/operador");
+}
+
+export function getFormasPagamento() {
+  return get("/formaspagamento");
+}
+
+export function getItens() {
+  return get("/itens");
 }

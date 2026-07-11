@@ -7,11 +7,13 @@ import {
   Users,
   Truck,
   Settings,
+  Wrench,
 } from "lucide-react";
 
 const menuItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/produtos", label: "Produtos", icon: Package },
+  { to: "/servicos", label: "Serviços", icon: Wrench },
   { to: "/estoque", label: "Estoque", icon: Boxes },
   { to: "/vendas", label: "Vendas", icon: ShoppingCart },
   { to: "/clientes", label: "Clientes", icon: Users },
