@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NeyBaterias.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NeyBaterias.Infrastructure.Migrations
 {
     [DbContext(typeof(NeyBateriasDbContext))]
-    partial class NeyBateriasDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260713053906_RenomearTabelaUsuarioParaOperador")]
+    partial class RenomearTabelaUsuarioParaOperador
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -599,7 +602,7 @@ namespace NeyBaterias.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_operador_login");
 
-                    b.ToTable("operador", (string)null);
+                    b.ToTable("Operador", (string)null);
                 });
 
             modelBuilder.Entity("NeyBaterias.Domain.Entities.Produto", b =>

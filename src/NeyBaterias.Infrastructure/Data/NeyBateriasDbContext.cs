@@ -23,6 +23,7 @@ public class NeyBateriasDbContext : DbContext
     public DbSet<CompraReposicao> ComprasReposicao => Set<CompraReposicao>();
     public DbSet<ItemReposicao> ItensReposicao => Set<ItemReposicao>();
     public DbSet<Estoque> Estoques => Set<Estoque>();
+    public DbSet<ConfiguracaoEmpresa> ConfiguracoesEmpresa => Set<ConfiguracaoEmpresa>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -43,4 +43,18 @@ public class FormasPagamentoController : ControllerBase
         await _uow.SaveChangesAsync();
         return NoContent();
     }
+
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, FormaPagamento forma)
+    {
+        if (id != forma.IdPagamento) return BadRequest();
+
+        var existente = await _uow.FormasPagamento.GetByIdAsync(id);
+        if (existente is null) return NotFound();
+
+        _uow.FormasPagamento.Update(forma);
+        await _uow.SaveChangesAsync();
+        return NoContent();
+    }
 }

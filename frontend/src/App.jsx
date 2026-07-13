@@ -16,6 +16,7 @@ import ListaFornecedor from "./pages/ListaFornecedor";
 import CadastroFornecedor from "./pages/CadastroFornecedor";
 import CadastroReposicao from "./pages/CadastroReposicao";
 import ListaReposicao from "./pages/ListaReposicao";
+import Configuracoes from "./pages/Configuracoes";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/fornecedores/novo" element={<CadastroFornecedor />} />
         <Route path="/reposicoes" element={<ListaReposicao />} />
         <Route path="/reposicoes/novo" element={<CadastroReposicao />} />
+        <Route path="/configuracoes" element={<Configuracoes />} />
       </Route>
     </Routes>
   );

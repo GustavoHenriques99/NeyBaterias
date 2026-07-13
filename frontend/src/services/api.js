@@ -141,14 +141,80 @@ export function criarVenda(dados) {
   return post("/vendas", dados);
 }
 
-export function getOperadores() {
-  return get("/operador");
-}
-
 export function getFormasPagamento() {
   return get("/formaspagamento");
 }
 
 export function getItens() {
   return get("/itens");
+}
+
+
+
+
+
+
+// Operadores (gestão de usuários do sistema)
+export function getOperadores() {
+  return get("/operador");
+}
+
+export function criarOperador(dados) {
+  return post("/operador", dados);
+}
+
+async function put(endpoint, dados) {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    method: "PUT",
+    headers: headersComAuth({ "Content-Type": "application/json" }),
+    body: JSON.stringify(dados),
+  });
+
+  if (!response.ok) {
+    const erro = await response.json().catch(() => null);
+    throw new Error(erro?.erro || erro?.title || `Erro ao atualizar em ${endpoint}`);
+  }
+
+  // PUT costuma devolver 204 No Content — não tenta parsear JSON nesse caso
+  if (response.status === 204) return null;
+  return response.json();
+}
+
+export function atualizarOperador(id, dados) {
+  return put(`/operador/${id}`, dados);
+}
+
+export function ativarOperador(id) {
+  return put(`/operador/${id}/ativar`);
+}
+
+export function desativarOperador(id) {
+  return put(`/operador/${id}/desativar`);
+}
+
+// Formas de pagamento
+export function criarFormaPagamento(dados) {
+  return post("/formaspagamento", dados);
+}
+
+export function atualizarFormaPagamento(id, dados) {
+  return put(`/formaspagamento/${id}`, dados);
+}
+
+// Meu perfil (operador logado)
+export function getMeuPerfil() {
+  return get("/auth/me");
+}
+
+export function alterarMinhaSenha(dados) {
+  return put("/auth/me/senha", dados);
+}
+
+// Configuração da empresa
+export function getConfiguracaoEmpresa() {
+  return get("/configuracaoempresa");
+}
+
+export function atualizarConfiguracaoEmpresa(dados) {
+  return put("/configuracaoempresa", dados);
 }

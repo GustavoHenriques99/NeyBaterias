@@ -69,4 +69,38 @@ public class AuthService : IAuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    public async Task<OperadorRespostaDto?> ObterPerfilAsync(int idOperador)
+{
+    var operador = await _uow.Operador.GetByIdAsync(idOperador);
+    if (operador is null) return null;
+
+    return new OperadorRespostaDto
+    {
+        IdOperador = operador.IdOperador,
+        Nome = operador.Nome,
+        Sobrenome = operador.Sobrenome,
+        Email = operador.Email,
+        TelCelular = operador.TelCelular,
+        Login = operador.Login,
+        Cargo = operador.Cargo,
+        NivelAcesso = operador.NivelAcesso,
+        Ativo = operador.Ativo
+    };
+}
+
+public async Task<bool> AlterarSenhaAsync(int idOperador, AlterarSenhaDto dto)
+{
+    var operador = await _uow.Operador.GetByIdAsync(idOperador);
+    if (operador is null) return false;
+
+    var senhaAtualValida = BCrypt.Net.BCrypt.Verify(dto.SenhaAtual, operador.Senha);
+    if (!senhaAtualValida) return false;
+
+    operador.Senha = BCrypt.Net.BCrypt.HashPassword(dto.NovaSenha);
+    _uow.Operador.Update(operador);
+    await _uow.SaveChangesAsync();
+
+    return true;
+}
 }

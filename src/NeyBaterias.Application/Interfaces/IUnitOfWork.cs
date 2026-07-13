@@ -21,6 +21,7 @@ public interface IUnitOfWork
     IRepository<CompraReposicao> ComprasReposicao { get; }
     IRepository<ItemReposicao> ItensReposicao { get; }
     IRepository<Estoque> Estoques { get; }
+    IRepository<ConfiguracaoEmpresa> ConfiguracaoEmpresa { get; }
 
     Task<int> SaveChangesAsync();
 }

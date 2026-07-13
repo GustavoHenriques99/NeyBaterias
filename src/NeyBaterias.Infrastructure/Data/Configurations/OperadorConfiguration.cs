@@ -4,11 +4,11 @@ using NeyBaterias.Domain.Entities;
 
 namespace NeyBaterias.Infrastructure.Data.Configurations;
 
-public class UsuarioConfiguration : IEntityTypeConfiguration<Operador>
+public class OperadorConfiguration : IEntityTypeConfiguration<Operador>
 {
     public void Configure(EntityTypeBuilder<Operador> builder)
     {
-        builder.ToTable("usuario");
+        builder.ToTable("operador");
         builder.HasKey(u => u.IdOperador);
 
         builder.Property(u => u.Nome).HasMaxLength(100).IsRequired();

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NeyBaterias.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NeyBaterias.Infrastructure.Migrations
 {
     [DbContext(typeof(NeyBateriasDbContext))]
-    partial class NeyBateriasDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260713045425_AdicionarConfiguracaoEmpresa")]
+    partial class AdicionarConfiguracaoEmpresa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -589,17 +592,17 @@ namespace NeyBaterias.Infrastructure.Migrations
                         .HasColumnName("tel_celular");
 
                     b.HasKey("IdOperador")
-                        .HasName("pk_operador");
+                        .HasName("pk_usuario");
 
                     b.HasIndex("Email")
                         .IsUnique()
-                        .HasDatabaseName("ix_operador_email");
+                        .HasDatabaseName("ix_usuario_email");
 
                     b.HasIndex("Login")
                         .IsUnique()
-                        .HasDatabaseName("ix_operador_login");
+                        .HasDatabaseName("ix_usuario_login");
 
-                    b.ToTable("operador", (string)null);
+                    b.ToTable("usuario", (string)null);
                 });
 
             modelBuilder.Entity("NeyBaterias.Domain.Entities.Produto", b =>
@@ -890,7 +893,7 @@ namespace NeyBaterias.Infrastructure.Migrations
                         .HasForeignKey("IdOperador")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_venda_operador_id_operador");
+                        .HasConstraintName("fk_venda_usuario_id_operador");
 
                     b.HasOne("NeyBaterias.Domain.Entities.FormaPagamento", "FormaPagamento")
                         .WithMany("Vendas")
