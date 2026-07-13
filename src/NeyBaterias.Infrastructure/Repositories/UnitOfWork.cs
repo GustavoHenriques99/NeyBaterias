@@ -26,6 +26,7 @@ public class UnitOfWork : IUnitOfWork
         ComprasReposicao = new Repository<CompraReposicao>(_context);
         ItensReposicao = new Repository<ItemReposicao>(_context);
         Estoques = new Repository<Estoque>(_context);
+        ConfiguracaoEmpresa = new Repository<ConfiguracaoEmpresa>(_context);
     }
 
     public IRepository<Operador> Operador { get; }
@@ -42,6 +43,8 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<CompraReposicao> ComprasReposicao { get; }
     public IRepository<ItemReposicao> ItensReposicao { get; }
     public IRepository<Estoque> Estoques { get; }
+    public IRepository<ConfiguracaoEmpresa> ConfiguracaoEmpresa { get; }
+    
 
     public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
 }
