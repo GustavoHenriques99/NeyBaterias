@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
@@ -8,7 +8,10 @@ import {
   Truck,
   Settings,
   Wrench,
+  PackagePlus,
+  LogOut,
 } from "lucide-react";
+import { getUsuarioLogado, logout } from "../services/api";
 
 const menuItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -18,10 +21,19 @@ const menuItems = [
   { to: "/vendas", label: "Vendas", icon: ShoppingCart },
   { to: "/clientes", label: "Clientes", icon: Users },
   { to: "/fornecedores", label: "Fornecedores", icon: Truck },
+  { to: "/reposicoes", label: "Reposições", icon: PackagePlus },
   { to: "/configuracoes", label: "Configurações", icon: Settings },
 ];
 
 function Layout() {
+  const usuario = getUsuarioLogado();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate("/login");
+  }
+
   return (
     <div className="flex min-h-screen bg-slate-50">
       {/* Menu lateral fixo */}
@@ -49,6 +61,22 @@ function Layout() {
             </NavLink>
           ))}
         </nav>
+
+        {usuario && (
+          <div className="px-3 py-4 border-t border-slate-800">
+            <div className="px-3 mb-2">
+              <p className="text-sm font-medium text-white">{usuario.nome}</p>
+              <p className="text-xs text-slate-400">{usuario.cargo}</p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800"
+            >
+              <LogOut size={18} />
+              Sair
+            </button>
+          </div>
+        )}
       </aside>
 
       {/* Conteúdo da página atual */}

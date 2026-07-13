@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getFornecedores } from "../services/api";
+import { useFiltroLista } from "../hooks/useFiltroLista";
+import BarraBusca from "../components/BarraBusca";
+import Paginacao from "../components/Paginacao";
 
-function ListaFornecedores() {
+function ListaFornecedor() {
   const [fornecedores, setFornecedores] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
@@ -13,6 +16,20 @@ function ListaFornecedores() {
       .catch((err) => setErro(err.message))
       .finally(() => setCarregando(false));
   }, []);
+
+  const obterCampoOrdenacao = useCallback((f) => f.razaoSocial || "", []);
+  const {
+    busca,
+    setBusca,
+    ordem,
+    alternarOrdem,
+    pagina,
+    setPagina,
+    totalPaginas,
+    itensPaginados,
+    totalFiltrados,
+    itensPorPagina,
+  } = useFiltroLista(fornecedores, obterCampoOrdenacao);
 
   if (carregando) return <p className="p-4">Carregando fornecedores...</p>;
   if (erro) return <p className="p-4 text-red-600">Erro: {erro}</p>;
@@ -29,6 +46,14 @@ function ListaFornecedores() {
         </Link>
       </div>
 
+      <BarraBusca
+        busca={busca}
+        onBuscaChange={setBusca}
+        ordem={ordem}
+        onAlternarOrdem={alternarOrdem}
+        placeholder="Pesquisar fornecedor pelo nome..."
+      />
+
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
@@ -41,7 +66,7 @@ function ListaFornecedores() {
             </tr>
           </thead>
           <tbody>
-            {fornecedores.map((f) => (
+            {itensPaginados.map((f) => (
               <tr key={f.idFornecedor} className="border-t">
                 <td className="px-4 py-3">{f.razaoSocial}</td>
                 <td className="px-4 py-3">{f.cnpj}</td>
@@ -52,12 +77,19 @@ function ListaFornecedores() {
             ))}
           </tbody>
         </table>
-        {fornecedores.length === 0 && (
-          <p className="p-4 text-sm text-slate-400">Nenhum fornecedor cadastrado.</p>
+        {itensPaginados.length === 0 && (
+          <p className="p-4 text-sm text-slate-400">Nenhum fornecedor encontrado.</p>
         )}
+        <Paginacao
+          pagina={pagina}
+          totalPaginas={totalPaginas}
+          onPaginaChange={setPagina}
+          totalFiltrados={totalFiltrados}
+          itensPorPagina={itensPorPagina}
+        />
       </div>
     </div>
   );
 }
 
-export default ListaFornecedores;
+export default ListaFornecedor;

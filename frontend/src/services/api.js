@@ -1,7 +1,21 @@
 const API_BASE_URL = "http://localhost:5001/api";
 
+function getToken() {
+  return localStorage.getItem("token");
+}
+
+function headersComAuth(extra = {}) {
+  const token = getToken();
+  return {
+    ...extra,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 async function get(endpoint) {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`);
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    headers: headersComAuth(),
+  });
   if (!response.ok) {
     throw new Error(`Erro ao buscar ${endpoint}`);
   }
@@ -12,7 +26,7 @@ async function get(endpoint) {
 async function post(endpoint, dados) {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: headersComAuth({ "Content-Type": "application/json" }),
     body: JSON.stringify(dados),
   });
 
@@ -22,6 +36,39 @@ async function post(endpoint, dados) {
   }
 
   return response.json();
+}
+
+// Funções de autenticação
+export async function login(loginUsuario, senha) {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ login: loginUsuario, senha }),
+  });
+
+  if (!response.ok) {
+    const erro = await response.json().catch(() => null);
+    throw new Error(erro?.erro || "Login ou senha inválidos.");
+  }
+
+  const dados = await response.json();
+  localStorage.setItem("token", dados.token);
+  localStorage.setItem("usuario", JSON.stringify({ nome: dados.nome, cargo: dados.cargo, nivelAcesso: dados.nivelAcesso }));
+  return dados;
+}
+
+export function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("usuario");
+}
+
+export function getUsuarioLogado() {
+  const dados = localStorage.getItem("usuario");
+  return dados ? JSON.parse(dados) : null;
+}
+
+export function estaAutenticado() {
+  return Boolean(getToken());
 }
 
 

@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { getClientes } from "../services/api";
+import { useFiltroLista } from "../hooks/useFiltroLista";
+import BarraBusca from "../components/BarraBusca";
+import Paginacao from "../components/Paginacao";
 
 function ListaClientes() {
   const [clientes, setClientes] = useState([]);
@@ -13,6 +16,23 @@ function ListaClientes() {
       .catch((err) => setErro(err.message))
       .finally(() => setCarregando(false));
   }, []);
+
+  const obterCampoOrdenacao = useCallback(
+    (c) => (c.tipo === "Fisico" ? c.nome : c.razaoSocial) || "",
+    []
+  );
+  const {
+    busca,
+    setBusca,
+    ordem,
+    alternarOrdem,
+    pagina,
+    setPagina,
+    totalPaginas,
+    itensPaginados,
+    totalFiltrados,
+    itensPorPagina,
+  } = useFiltroLista(clientes, obterCampoOrdenacao);
 
   if (carregando) return <p className="p-4">Carregando clientes...</p>;
   if (erro) return <p className="p-4 text-red-600">Erro: {erro}</p>;
@@ -29,6 +49,14 @@ function ListaClientes() {
         </Link>
       </div>
 
+      <BarraBusca
+        busca={busca}
+        onBuscaChange={setBusca}
+        ordem={ordem}
+        onAlternarOrdem={alternarOrdem}
+        placeholder="Pesquisar cliente pelo nome..."
+      />
+
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
@@ -40,7 +68,7 @@ function ListaClientes() {
             </tr>
           </thead>
           <tbody>
-            {clientes.map((c) => (
+            {itensPaginados.map((c) => (
               <tr key={c.idCliente} className="border-t">
                 <td className="px-4 py-3">
                   {c.tipo === "Fisico" ? c.nome : c.razaoSocial}
@@ -72,9 +100,16 @@ function ListaClientes() {
             ))}
           </tbody>
         </table>
-        {clientes.length === 0 && (
-          <p className="p-4 text-sm text-slate-400">Nenhum cliente cadastrado.</p>
+        {itensPaginados.length === 0 && (
+          <p className="p-4 text-sm text-slate-400">Nenhum cliente encontrado.</p>
         )}
+        <Paginacao
+          pagina={pagina}
+          totalPaginas={totalPaginas}
+          onPaginaChange={setPagina}
+          totalFiltrados={totalFiltrados}
+          itensPorPagina={itensPorPagina}
+        />
       </div>
     </div>
   );

@@ -104,7 +104,7 @@ function CadastroReposicao() {
           precoCompra: i.precoCompra,
         })),
       });
-      navigate("/estoque");
+      navigate("/reposicoes");
     } catch (err) {
       setErro(err.message);
     } finally {

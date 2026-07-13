@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import RotaProtegida from "./components/RotaProtegida";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ListaProdutos from "./pages/ListaProdutos";
 import CadastroProduto from "./pages/CadastroProduto";
@@ -13,11 +15,20 @@ import Estoque from "./pages/Estoque";
 import ListaFornecedor from "./pages/ListaFornecedor";
 import CadastroFornecedor from "./pages/CadastroFornecedor";
 import CadastroReposicao from "./pages/CadastroReposicao";
+import ListaReposicao from "./pages/ListaReposicao";
 
 function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route path="/login" element={<Login />} />
+
+      <Route
+        element={
+          <RotaProtegida>
+            <Layout />
+          </RotaProtegida>
+        }
+      >
         <Route path="/" element={<Dashboard />} />
         <Route path="/produtos" element={<ListaProdutos />} />
         <Route path="/produtos/novo" element={<CadastroProduto />} />
@@ -30,6 +41,7 @@ function App() {
         <Route path="/vendas/novo" element={<CadastroVenda />} />
         <Route path="/fornecedores" element={<ListaFornecedor />} />
         <Route path="/fornecedores/novo" element={<CadastroFornecedor />} />
+        <Route path="/reposicoes" element={<ListaReposicao />} />
         <Route path="/reposicoes/novo" element={<CadastroReposicao />} />
       </Route>
     </Routes>

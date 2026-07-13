@@ -151,7 +151,7 @@ function CadastroVenda() {
   if (erroCarga) return <p className="p-4 text-red-600">Erro: {erroCarga}</p>;
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold text-slate-800 mb-6">Nova Venda</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">

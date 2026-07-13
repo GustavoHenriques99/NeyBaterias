@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using NeyBaterias.Application.DTOs;
 using NeyBaterias.Application.Interfaces;
 
 namespace NeyBaterias.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ComprasReposicaoController : ControllerBase

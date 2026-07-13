@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using NeyBaterias.Application.Interfaces;
 using NeyBaterias.Domain.Enums;
 
 namespace NeyBaterias.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class EstoqueController : ControllerBase

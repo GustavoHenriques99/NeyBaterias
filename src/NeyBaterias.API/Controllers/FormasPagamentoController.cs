@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using NeyBaterias.Application.Interfaces;
 using NeyBaterias.Domain.Entities;
 
 namespace NeyBaterias.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class FormasPagamentoController : ControllerBase
