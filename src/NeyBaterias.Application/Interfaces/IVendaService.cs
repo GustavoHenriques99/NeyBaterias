@@ -10,4 +10,5 @@ public interface IVendaService
     /// para cada item vendido que seja um Produto.
     /// </summary>
     Task<Venda> RegistrarVendaAsync(CriarVendaDto dto);
+    Task ExcluirVendaAsync(int idVenda);
 }

@@ -119,7 +119,44 @@ public class ProdutosController : ControllerBase
         if (produto is null) return NotFound();
 
         _uow.Produtos.Remove(produto);
-        await _uow.SaveChangesAsync();
+
+        try
+        {
+            await _uow.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            return Conflict(new { erro = "Não é possível excluir: este produto está vinculado a vendas ou reposições." });
+        }
+
         return NoContent();
     }
+    
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, AtualizarProdutoDto dto)
+    {
+        var produto = await _uow.Produtos.Query()
+            .Include(p => p.Item)
+            .FirstOrDefaultAsync(p => p.IdProduto == id);
+
+        if (produto is null) return NotFound();
+
+        produto.Descricao = dto.Descricao;
+        produto.Amperagem = dto.Amperagem;
+        produto.Marca = dto.Marca;
+        produto.Modelo = dto.Modelo;
+        produto.PrecoCusto = dto.PrecoCusto;
+        produto.PrecoVenda = dto.PrecoVenda;
+
+        produto.Item.Descricao = dto.Descricao;
+        produto.Item.Valor = dto.Valor;
+
+        _uow.Produtos.Update(produto);
+        await _uow.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    
 }

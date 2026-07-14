@@ -56,4 +56,20 @@ public class ComprasReposicaoController : ControllerBase
             return BadRequest(new { erro = ex.Message });
         }
     }
+
+
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _compraService.ExcluirReposicaoAsync(id);
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { erro = ex.Message });
+        }
+    }
 }

@@ -72,6 +72,22 @@ public class VendasController : ControllerBase
         }
     }
 
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _vendaService.ExcluirVendaAsync(id);
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { erro = ex.Message });
+        }
+    }
+
+
     private static VendaRespostaDto MapearParaDto(Venda venda)
     {
         var clienteNome = venda.Cliente.ClienteFisico?.Nome

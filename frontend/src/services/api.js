@@ -114,6 +114,10 @@ export function criarProduto(dados) {
   return post("/produtos", dados);
 }
 
+export function atualizarProduto(id, dados) {
+  return put(`/produtos/${id}`, dados);
+}
+
 export function getServicos() {
   return get("/servicos");
 }
@@ -217,4 +221,47 @@ export function getConfiguracaoEmpresa() {
 
 export function atualizarConfiguracaoEmpresa(dados) {
   return put("/configuracaoempresa", dados);
+}
+
+
+async function del(endpoint) {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    method: "DELETE",
+    headers: headersComAuth(),
+  });
+
+  if (!response.ok) {
+    const erro = await response.json().catch(() => null);
+    throw new Error(erro?.erro || erro?.title || `Erro ao excluir em ${endpoint}`);
+  }
+
+  return true;
+}
+
+export function deletarProduto(id) {
+  return del(`/produtos/${id}`);
+}
+
+export function deletarServico(id) {
+  return del(`/servicos/${id}`);
+}
+
+export function deletarVenda(id) {
+  return del(`/vendas/${id}`);
+}
+
+export function deletarCliente(id) {
+  return del(`/clientes/${id}`);
+}
+
+export function deletarFornecedor(id) {
+  return del(`/fornecedores/${id}`);
+}
+
+export function deletarFormaPagamento(id) {
+  return del(`/formaspagamento/${id}`);
+}
+
+export function deletarReposicao(id) {
+  return del(`/comprasreposicao/${id}`);
 }

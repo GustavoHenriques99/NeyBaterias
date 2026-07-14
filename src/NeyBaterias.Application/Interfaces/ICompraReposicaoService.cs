@@ -10,4 +10,5 @@ public interface ICompraReposicaoService
     /// para cada produto reposto.
     /// </summary>
     Task<CompraReposicao> RegistrarReposicaoAsync(CriarCompraReposicaoDto dto);
+    Task ExcluirReposicaoAsync(int idReposicao);
 }

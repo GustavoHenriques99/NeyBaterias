@@ -81,6 +81,28 @@ public class VendaService : IVendaService
         return venda;
     }
 
+    public async Task ExcluirVendaAsync(int idVenda)
+{
+    var venda = await _uow.Vendas.Query()
+        .Include(v => v.ItensVenda)
+            .ThenInclude(iv => iv.MovimentoEstoque)
+        .FirstOrDefaultAsync(v => v.IdVenda == idVenda)
+        ?? throw new InvalidOperationException("Venda não encontrada.");
+
+    // Reverte o estoque: remove os movimentos de SAÍDA gerados por essa venda.
+    // Como o saldo é (entradas - saídas), remover a saída já devolve a quantidade.
+    foreach (var itemVenda in venda.ItensVenda)
+    {
+        if (itemVenda.MovimentoEstoque is not null)
+        {
+            _uow.Estoques.Remove(itemVenda.MovimentoEstoque);
+        }
+    }
+
+    _uow.Vendas.Remove(venda); // cascade remove os ItensVenda automaticamente
+    await _uow.SaveChangesAsync();
+}
+
     private async Task<int> ObterSaldoEstoqueAsync(int idProduto)
     {
         var movimentos = await _uow.Estoques.FindAsync(e => e.IdProduto == idProduto);

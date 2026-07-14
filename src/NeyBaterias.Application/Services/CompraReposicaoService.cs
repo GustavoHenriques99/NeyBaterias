@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using NeyBaterias.Application.DTOs;
 using NeyBaterias.Application.Interfaces;
 using NeyBaterias.Domain.Entities;
@@ -57,5 +58,26 @@ public class CompraReposicaoService : ICompraReposicaoService
         await _uow.SaveChangesAsync();
 
         return reposicao;
+    }
+
+
+    public async Task ExcluirReposicaoAsync(int idReposicao)
+    {
+        var reposicao = await _uow.ComprasReposicao.Query()
+            .Include(c => c.ItensReposicao)
+                .ThenInclude(i => i.MovimentoEstoque)
+            .FirstOrDefaultAsync(c => c.IdReposicao == idReposicao)
+            ?? throw new InvalidOperationException("Reposição não encontrada.");
+
+        foreach (var itemReposicao in reposicao.ItensReposicao)
+        {
+            if (itemReposicao.MovimentoEstoque is not null)
+            {
+                _uow.Estoques.Remove(itemReposicao.MovimentoEstoque);
+            }
+        }
+
+        _uow.ComprasReposicao.Remove(reposicao);
+        await _uow.SaveChangesAsync();
     }
 }

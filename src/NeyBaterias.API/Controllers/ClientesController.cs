@@ -38,15 +38,26 @@ public class ClientesController : ControllerBase
         return cliente is null ? NotFound() : Ok(MapearParaDto(cliente));
     }
 
-    // Cria um cliente Pessoa Física (Cliente + ClienteFisico em uma única operação)
     [HttpPost("fisico")]
-    public async Task<ActionResult<ClienteRespostaDto>> CreateFisico(ClienteFisico clienteFisico)
+    public async Task<ActionResult<ClienteRespostaDto>> CreateFisico(CriarClienteFisicoDto dto)
     {
         var cliente = new Cliente
         {
             DataCadastro = DateOnly.FromDateTime(DateTime.UtcNow),
             Ativo = true,
-            ClienteFisico = clienteFisico
+            ClienteFisico = new ClienteFisico
+            {
+                Cpf = dto.Cpf,
+                Nome = dto.Nome,
+                Email = dto.Email,
+                DataNascimento = dto.DataNascimento,
+                Telefone = dto.Telefone,
+                Cep = dto.Cep,
+                Endereco = dto.Endereco,
+                Numero = dto.Numero,
+                Complemento = dto.Complemento,
+                Cidade = dto.Cidade
+            }
         };
 
         await _uow.Clientes.AddAsync(cliente);
@@ -55,15 +66,22 @@ public class ClientesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = cliente.IdCliente }, MapearParaDto(cliente));
     }
 
-    // Cria um cliente Pessoa Jurídica (Cliente + ClienteJuridico em uma única operação)
     [HttpPost("juridico")]
-    public async Task<ActionResult<ClienteRespostaDto>> CreateJuridico(ClienteJuridico clienteJuridico)
+    public async Task<ActionResult<ClienteRespostaDto>> CreateJuridico(CriarClienteJuridicoDto dto)
     {
         var cliente = new Cliente
         {
             DataCadastro = DateOnly.FromDateTime(DateTime.UtcNow),
             Ativo = true,
-            ClienteJuridico = clienteJuridico
+            ClienteJuridico = new ClienteJuridico
+            {
+                Cnpj = dto.Cnpj,
+                RazaoSocial = dto.RazaoSocial,
+                NomeFantasia = dto.NomeFantasia,
+                Ie = dto.Ie,
+                ImTelefone = dto.ImTelefone,
+                TelCelular = dto.TelCelular
+            }
         };
 
         await _uow.Clientes.AddAsync(cliente);
@@ -71,6 +89,7 @@ public class ClientesController : ControllerBase
 
         return CreatedAtAction(nameof(GetById), new { id = cliente.IdCliente }, MapearParaDto(cliente));
     }
+
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)

@@ -27,3 +27,15 @@ public class ItemRespostaDto
     public decimal Valor { get; set; }
     public string Tipo { get; set; } = string.Empty; // "Produto" ou "Servico"
 }
+
+
+public class AtualizarProdutoDto
+{
+    public string Descricao { get; set; } = string.Empty;
+    public decimal Valor { get; set; }
+    public string Amperagem { get; set; } = string.Empty;
+    public string Marca { get; set; } = string.Empty;
+    public string Modelo { get; set; } = string.Empty;
+    public decimal PrecoCusto { get; set; }
+    public decimal PrecoVenda { get; set; }
+}
