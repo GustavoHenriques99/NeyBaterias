@@ -31,11 +31,22 @@ builder.Services.AddScoped<IVendaService, VendaService>();
 builder.Services.AddScoped<ICompraReposicaoService, CompraReposicaoService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-// CORS liberado para desenvolvimento (ajustar em produção)
+// CORS: em desenvolvimento libera tudo; em produção, restringe à origem do front-end
+// definida na variável de ambiente Cors__OrigemPermitida (ex.: https://neybaterias.vercel.app)
+var origemPermitida = builder.Configuration["Cors:OrigemPermitida"];
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    {
+        if (!string.IsNullOrWhiteSpace(origemPermitida))
+        {
+            policy.WithOrigins(origemPermitida).AllowAnyMethod().AllowAnyHeader();
+        }
+        else
+        {
+            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        }
+    });
 });
 
 
@@ -72,11 +83,8 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors();
 app.UseHttpsRedirection();
