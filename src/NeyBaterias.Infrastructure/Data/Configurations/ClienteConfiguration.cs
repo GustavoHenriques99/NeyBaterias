@@ -31,13 +31,14 @@ public class ClienteFisicoConfiguration : IEntityTypeConfiguration<ClienteFisico
         builder.ToTable("cliente_fisico");
         builder.HasKey(cf => cf.IdClienteFisico);
 
-        builder.Property(cf => cf.Cpf).HasMaxLength(14).IsRequired();
+        builder.Property(cf => cf.Cpf).HasMaxLength(14);
         builder.Property(cf => cf.Nome).HasMaxLength(150).IsRequired();
         builder.Property(cf => cf.Email).HasMaxLength(150);
         builder.Property(cf => cf.Telefone).HasMaxLength(20);
         builder.Property(cf => cf.Cep).HasMaxLength(9);
-        builder.Property(cf => cf.Endereco).HasMaxLength(200);
-        builder.Property(cf => cf.Cidade).HasMaxLength(100);
+        builder.Property(cf => cf.Endereco).HasMaxLength(200).IsRequired();
+        builder.Property(cf => cf.Numero).IsRequired();
+        builder.Property(cf => cf.Cidade).HasMaxLength(100).IsRequired();
 
         builder.HasIndex(cf => cf.Cpf).IsUnique();
         builder.HasIndex(cf => cf.IdCliente).IsUnique();
@@ -51,7 +52,7 @@ public class ClienteJuridicoConfiguration : IEntityTypeConfiguration<ClienteJuri
         builder.ToTable("cliente_juridico");
         builder.HasKey(cj => cj.IdClienteJuridico);
 
-        builder.Property(cj => cj.Cnpj).HasMaxLength(18).IsRequired();
+        builder.Property(cj => cj.Cnpj).HasMaxLength(18);
         builder.Property(cj => cj.RazaoSocial).HasMaxLength(200).IsRequired();
         builder.Property(cj => cj.NomeFantasia).HasMaxLength(200);
         builder.Property(cj => cj.Ie).HasMaxLength(20);

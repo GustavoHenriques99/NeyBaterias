@@ -49,7 +49,10 @@ function CadastroCliente() {
 
     try {
       if (tipo === "Fisico") {
-        await criarClienteFisico(formFisico);
+        await criarClienteFisico({
+          ...formFisico,
+          dataNascimento: formFisico.dataNascimento || null,
+        });
       } else {
         await criarClienteJuridico(formJuridico);
       }
@@ -95,12 +98,12 @@ function CadastroCliente() {
         {tipo === "Fisico" ? (
           <>
             <Campo label="Nome completo" name="nome" value={formFisico.nome} onChange={handleChangeFisico} />
-            <Campo label="CPF" name="cpf" value={formFisico.cpf} onChange={handleChangeFisico} />
-            <Campo label="Email" name="email" type="email" value={formFisico.email} onChange={handleChangeFisico} />
-            <Campo label="Data de Nascimento" name="dataNascimento" type="date" value={formFisico.dataNascimento} onChange={handleChangeFisico} />
-            <Campo label="Telefone" name="telefone" value={formFisico.telefone} onChange={handleChangeFisico} />
+            <Campo label="CPF" name="cpf" value={formFisico.cpf} onChange={handleChangeFisico} obrigatorio={false} />
+            <Campo label="Email" name="email" type="email" value={formFisico.email} onChange={handleChangeFisico} obrigatorio={false} />
+            <Campo label="Data de Nascimento" name="dataNascimento" type="date" value={formFisico.dataNascimento} onChange={handleChangeFisico} obrigatorio={false} />
+            <Campo label="Telefone" name="telefone" value={formFisico.telefone} onChange={handleChangeFisico} obrigatorio={false} />
             <div className="grid grid-cols-2 gap-4">
-              <Campo label="CEP" name="cep" value={formFisico.cep} onChange={handleChangeFisico} />
+              <Campo label="CEP" name="cep" value={formFisico.cep} onChange={handleChangeFisico} obrigatorio={false} />
               <Campo label="Número" name="numero" value={formFisico.numero} onChange={handleChangeFisico} />
             </div>
             <Campo label="Endereço" name="endereco" value={formFisico.endereco} onChange={handleChangeFisico} />
@@ -112,12 +115,12 @@ function CadastroCliente() {
         ) : (
           <>
             <Campo label="Razão Social" name="razaoSocial" value={formJuridico.razaoSocial} onChange={handleChangeJuridico} />
-            <Campo label="Nome Fantasia" name="nomeFantasia" value={formJuridico.nomeFantasia} onChange={handleChangeJuridico} />
-            <Campo label="CNPJ" name="cnpj" value={formJuridico.cnpj} onChange={handleChangeJuridico} />
+            <Campo label="Nome Fantasia" name="nomeFantasia" value={formJuridico.nomeFantasia} onChange={handleChangeJuridico} obrigatorio={false} />
+            <Campo label="CNPJ" name="cnpj" value={formJuridico.cnpj} onChange={handleChangeJuridico} obrigatorio={false} />
             <Campo label="Inscrição Estadual" name="ie" value={formJuridico.ie} onChange={handleChangeJuridico} obrigatorio={false} />
             <div className="grid grid-cols-2 gap-4">
               <Campo label="Telefone Fixo" name="imTelefone" value={formJuridico.imTelefone} onChange={handleChangeJuridico} obrigatorio={false} />
-              <Campo label="Celular" name="telCelular" value={formJuridico.telCelular} onChange={handleChangeJuridico} />
+              <Campo label="Celular" name="telCelular" value={formJuridico.telCelular} onChange={handleChangeJuridico} obrigatorio={false} />
             </div>
           </>
         )}

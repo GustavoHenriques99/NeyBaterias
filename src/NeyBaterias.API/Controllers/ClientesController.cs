@@ -47,15 +47,15 @@ public class ClientesController : ControllerBase
             Ativo = true,
             ClienteFisico = new ClienteFisico
             {
-                Cpf = dto.Cpf,
+                Cpf = Normalizar(dto.Cpf),
                 Nome = dto.Nome,
-                Email = dto.Email,
+                Email = Normalizar(dto.Email),
                 DataNascimento = dto.DataNascimento,
-                Telefone = dto.Telefone,
-                Cep = dto.Cep,
+                Telefone = Normalizar(dto.Telefone),
+                Cep = Normalizar(dto.Cep),
                 Endereco = dto.Endereco,
                 Numero = dto.Numero,
-                Complemento = dto.Complemento,
+                Complemento = Normalizar(dto.Complemento),
                 Cidade = dto.Cidade
             }
         };
@@ -75,12 +75,12 @@ public class ClientesController : ControllerBase
             Ativo = true,
             ClienteJuridico = new ClienteJuridico
             {
-                Cnpj = dto.Cnpj,
+                Cnpj = Normalizar(dto.Cnpj),
                 RazaoSocial = dto.RazaoSocial,
-                NomeFantasia = dto.NomeFantasia,
-                Ie = dto.Ie,
-                ImTelefone = dto.ImTelefone,
-                TelCelular = dto.TelCelular
+                NomeFantasia = Normalizar(dto.NomeFantasia),
+                Ie = Normalizar(dto.Ie),
+                ImTelefone = Normalizar(dto.ImTelefone),
+                TelCelular = Normalizar(dto.TelCelular)
             }
         };
 
@@ -89,6 +89,11 @@ public class ClientesController : ControllerBase
 
         return CreatedAtAction(nameof(GetById), new { id = cliente.IdCliente }, MapearParaDto(cliente));
     }
+
+    // Campos opcionais com índice único (Cpf/Cnpj) precisam virar NULL quando vazios,
+    // senão duas strings vazias ("") batem na constraint UNIQUE do banco.
+    private static string? Normalizar(string? valor) =>
+        string.IsNullOrWhiteSpace(valor) ? null : valor.Trim();
 
 
     [HttpDelete("{id:int}")]

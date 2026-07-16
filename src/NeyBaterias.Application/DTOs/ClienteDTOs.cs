@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace NeyBaterias.Application.DTOs;
 
 public class ClienteRespostaDto
@@ -23,24 +25,37 @@ public class ClienteRespostaDto
 
 public class CriarClienteFisicoDto
 {
-    public string Cpf { get; set; } = string.Empty;
+    public string? Cpf { get; set; }
+
+    [Required(ErrorMessage = "Nome é obrigatório.")]
     public string Nome { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public DateOnly DataNascimento { get; set; }
-    public string Telefone { get; set; } = string.Empty;
-    public string Cep { get; set; } = string.Empty;
+
+    public string? Email { get; set; }
+    public DateOnly? DataNascimento { get; set; }
+    public string? Telefone { get; set; }
+    public string? Cep { get; set; }
+
+    [Required(ErrorMessage = "Endereço é obrigatório.")]
     public string Endereco { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Número é obrigatório.")]
     public string Numero { get; set; } = string.Empty;
+
     public string? Complemento { get; set; }
+
+    [Required(ErrorMessage = "Cidade é obrigatória.")]
     public string Cidade { get; set; } = string.Empty;
 }
 
 public class CriarClienteJuridicoDto
 {
-    public string Cnpj { get; set; } = string.Empty;
+    public string? Cnpj { get; set; }
+
+    [Required(ErrorMessage = "Razão Social é obrigatória.")]
     public string RazaoSocial { get; set; } = string.Empty;
-    public string NomeFantasia { get; set; } = string.Empty;
-    public string Ie { get; set; } = string.Empty;
-    public string ImTelefone { get; set; } = string.Empty;
-    public string TelCelular { get; set; } = string.Empty;
+
+    public string? NomeFantasia { get; set; }
+    public string? Ie { get; set; }
+    public string? ImTelefone { get; set; }
+    public string? TelCelular { get; set; }
 }
