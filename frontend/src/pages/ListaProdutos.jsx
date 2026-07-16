@@ -1,12 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Pencil, Check, X, Search } from "lucide-react";
-import { getProdutos, atualizarProduto } from "../services/api";
-import { Trash2 } from "lucide-react";
-import { deletarProduto } from "../services/api";
+import { Pencil, Check, X, Search, Trash2 } from "lucide-react";
+import { getProdutos, atualizarProduto, deletarProduto } from "../services/api";
 import ConfirmarExclusao from "../components/ConfirmarExclusao";
-
-const CAMPOS_EDITAVEIS = ["descricao", "amperagem", "marca", "modelo", "precoCusto", "precoVenda"];
 
 function ListaProdutos() {
   const [produtos, setProdutos] = useState([]);
@@ -17,6 +13,9 @@ function ListaProdutos() {
   const [editandoId, setEditandoId] = useState(null);
   const [formEdicao, setFormEdicao] = useState({});
   const [salvando, setSalvando] = useState(false);
+
+  const [produtoParaExcluir, setProdutoParaExcluir] = useState(null);
+  const [excluindo, setExcluindo] = useState(false);
 
   function carregar() {
     setCarregando(true);
@@ -30,7 +29,6 @@ function ListaProdutos() {
     carregar();
   }, []);
 
-  // Filtra por nome e ordena alfabeticamente — refeito só quando produtos ou busca mudam
   const produtosFiltrados = useMemo(() => {
     return produtos
       .filter((p) => p.descricao.toLowerCase().includes(busca.toLowerCase()))
@@ -41,7 +39,6 @@ function ListaProdutos() {
     setEditandoId(produto.idProduto);
     setFormEdicao({
       descricao: produto.descricao,
-      valor: produto.valor ?? produto.precoVenda,
       amperagem: produto.amperagem,
       marca: produto.marca,
       modelo: produto.modelo,
@@ -64,7 +61,6 @@ function ListaProdutos() {
     try {
       await atualizarProduto(id, {
         descricao: formEdicao.descricao,
-        valor: Number(formEdicao.valor),
         amperagem: formEdicao.amperagem,
         marca: formEdicao.marca,
         modelo: formEdicao.modelo,
@@ -77,6 +73,20 @@ function ListaProdutos() {
       setErro(err.message);
     } finally {
       setSalvando(false);
+    }
+  }
+
+  async function confirmarExclusao() {
+    if (!produtoParaExcluir) return;
+    setExcluindo(true);
+    try {
+      await deletarProduto(produtoParaExcluir.idProduto);
+      setProdutoParaExcluir(null);
+      carregar();
+    } catch (err) {
+      setErro(err.message);
+    } finally {
+      setExcluindo(false);
     }
   }
 
@@ -94,7 +104,6 @@ function ListaProdutos() {
         </Link>
       </div>
 
-      {/* Busca */}
       <div className="relative mb-4 max-w-sm">
         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
         <input
@@ -176,13 +185,22 @@ function ListaProdutos() {
                       <td className="px-4 py-3">R$ {p.precoCusto.toFixed(2)}</td>
                       <td className="px-4 py-3">R$ {p.precoVenda.toFixed(2)}</td>
                       <td className="px-4 py-3 text-right">
-                        <button
-                          onClick={() => iniciarEdicao(p)}
-                          title="Editar"
-                          className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500"
-                        >
-                          <Pencil size={16} />
-                        </button>
+                        <div className="flex justify-end gap-1">
+                          <button
+                            onClick={() => iniciarEdicao(p)}
+                            title="Editar"
+                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500"
+                          >
+                            <Pencil size={16} />
+                          </button>
+                          <button
+                            onClick={() => setProdutoParaExcluir(p)}
+                            title="Excluir"
+                            className="p-1.5 rounded-lg hover:bg-red-50 text-red-500"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </td>
                     </>
                   )}
@@ -193,9 +211,19 @@ function ListaProdutos() {
         </table>
         {produtosFiltrados.length === 0 && (
           <p className="p-4 text-sm text-slate-400">Nenhum produto encontrado.</p>
-          )
-        }
+        )}
       </div>
+
+      {(
+        <ConfirmarExclusao
+          aberto={!!produtoParaExcluir}
+          titulo="Excluir produto"
+          mensagem={`Deseja excluir o produto "${produtoParaExcluir?.descricao}"?`}
+          onConfirmar={confirmarExclusao}
+          onCancelar={() => setProdutoParaExcluir(null)}
+          excluindo={excluindo}
+        />
+      )}
     </div>
   );
 }
