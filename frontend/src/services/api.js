@@ -265,3 +265,21 @@ export function deletarFormaPagamento(id) {
 export function deletarReposicao(id) {
   return del(`/comprasreposicao/${id}`);
 }
+// Atualizar fornecedor
+export function atualizarFornecedor(id, dados) {
+  return put(`/fornecedores/${id}`, dados);
+}
+
+// Atualizar serviço
+export function atualizarServico(id, dados) {
+  return put(`/servicos/${id}`, dados);
+}
+
+// Atualizar cliente
+export function atualizarClienteFisico(id, dados) {
+  return put(`/clientes/fisico/${id}`, dados);
+}
+
+export function atualizarClienteJuridico(id, dados) {
+  return put(`/clientes/juridico/${id}`, dados);
+}
