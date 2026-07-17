@@ -53,6 +53,28 @@ public class ServicosController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = item.Servico.IdServico }, item.Servico);
     }
 
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, AtualizarServicoDto dto)
+    {
+        var servico = await _uow.Servicos.Query()
+            .Include(s => s.Item)
+            .FirstOrDefaultAsync(s => s.IdServico == id);
+
+        if (servico is null) return NotFound();
+
+        servico.Descricao = dto.Descricao;
+        servico.Preco = dto.Preco;
+        servico.TempoEstimado = dto.TempoEstimado;
+
+        servico.Item.Descricao = dto.Descricao;
+        servico.Item.Valor = dto.Valor;
+
+        _uow.Servicos.Update(servico);
+        await _uow.SaveChangesAsync();
+
+        return NoContent();
+    }
+
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -60,7 +82,16 @@ public class ServicosController : ControllerBase
         if (servico is null) return NotFound();
 
         _uow.Servicos.Remove(servico);
-        await _uow.SaveChangesAsync();
+
+        try
+        {
+            await _uow.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            return Conflict(new { erro = "Não é possível excluir: este serviço está vinculado a vendas registradas." });
+        }
+
         return NoContent();
     }
 }

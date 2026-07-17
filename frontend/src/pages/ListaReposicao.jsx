@@ -56,7 +56,7 @@ function ListaReposicao() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-slate-800">Reposições de Estoque</h1>
-        <Link to="/reposicoes/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+        <Link to="/reposicoes/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
           + Nova Reposição
         </Link>
       </div>
@@ -64,24 +64,24 @@ function ListaReposicao() {
       <BarraBusca busca={busca} onBuscaChange={setBusca} ordem={ordem} onAlternarOrdem={alternarOrdem} placeholder="Pesquisar reposição pelo nome do fornecedor..." />
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-3">Data</th>
-              <th className="px-4 py-3">Fornecedor</th>
-              <th className="px-4 py-3">Itens</th>
-              <th className="px-4 py-3">Total</th>
-              <th className="px-4 py-3 text-right">Ações</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Data</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Fornecedor</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Itens</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Total</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
             {itensPaginados.map((r) => (
               <tr key={r.idReposicao} className="border-t">
-                <td className="px-4 py-3">{formatarData(r.dataReposicao)}</td>
-                <td className="px-4 py-3">{r.fornecedor?.razaoSocial}</td>
-                <td className="px-4 py-3">{r.itensReposicao.length} {r.itensReposicao.length === 1 ? "produto" : "produtos"}</td>
-                <td className="px-4 py-3 font-medium text-slate-800">{formatarMoeda(r.preco)}</td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{formatarData(r.dataReposicao)}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{r.fornecedor?.razaoSocial}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{r.itensReposicao.length} {r.itensReposicao.length === 1 ? "produto" : "produtos"}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 font-medium text-slate-800">{formatarMoeda(r.preco)}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
                   <button onClick={() => setItemParaExcluir(r)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
                     <Trash2 size={16} />
                   </button>

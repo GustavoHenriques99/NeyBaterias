@@ -98,7 +98,7 @@ function ListaProdutos() {
         <h1 className="text-2xl font-bold">Produtos</h1>
         <Link
           to="/produtos/novo"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 whitespace-nowrap"
+          className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700 whitespace-nowrap"
         >
           + Novo Produto
         </Link>
@@ -118,16 +118,16 @@ function ListaProdutos() {
       {erro && <p className="text-sm text-red-600 mb-4">{erro}</p>}
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-3">Descrição</th>
-              <th className="px-4 py-3">Marca</th>
-              <th className="px-4 py-3">Modelo</th>
-              <th className="px-4 py-3">Amperagem</th>
-              <th className="px-4 py-3">Preço Custo</th>
-              <th className="px-4 py-3">Preço Venda</th>
-              <th className="px-4 py-3 text-right">Ações</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Descrição</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden sm:table-cell">Marca</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">Modelo</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">Amperagem</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden sm:table-cell">Preço Custo</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Preço Venda</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -138,25 +138,25 @@ function ListaProdutos() {
                 <tr key={p.idProduto} className="border-t">
                   {emEdicao ? (
                     <>
-                      <td className="px-4 py-2">
+                      <td className="px-2 py-1.5 sm:px-4 sm:py-2">
                         <InputInline value={formEdicao.descricao} onChange={(v) => handleChangeEdicao("descricao", v)} />
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-2 py-1.5 sm:px-4 sm:py-2 hidden sm:table-cell">
                         <InputInline value={formEdicao.marca} onChange={(v) => handleChangeEdicao("marca", v)} />
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-2 py-1.5 sm:px-4 sm:py-2 hidden md:table-cell">
                         <InputInline value={formEdicao.modelo} onChange={(v) => handleChangeEdicao("modelo", v)} />
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-2 py-1.5 sm:px-4 sm:py-2 hidden md:table-cell">
                         <InputInline value={formEdicao.amperagem} onChange={(v) => handleChangeEdicao("amperagem", v)} />
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-2 py-1.5 sm:px-4 sm:py-2 hidden sm:table-cell">
                         <InputInline type="number" value={formEdicao.precoCusto} onChange={(v) => handleChangeEdicao("precoCusto", v)} />
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-2 py-1.5 sm:px-4 sm:py-2">
                         <InputInline type="number" value={formEdicao.precoVenda} onChange={(v) => handleChangeEdicao("precoVenda", v)} />
                       </td>
-                      <td className="px-4 py-2 text-right">
+                      <td className="px-2 py-1.5 sm:px-4 sm:py-2 text-right">
                         <div className="flex justify-end gap-1">
                           <button
                             onClick={() => salvarEdicao(p.idProduto)}
@@ -178,13 +178,13 @@ function ListaProdutos() {
                     </>
                   ) : (
                     <>
-                      <td className="px-4 py-3">{p.descricao}</td>
-                      <td className="px-4 py-3">{p.marca}</td>
-                      <td className="px-4 py-3">{p.modelo}</td>
-                      <td className="px-4 py-3">{p.amperagem}</td>
-                      <td className="px-4 py-3">R$ {p.precoCusto.toFixed(2)}</td>
-                      <td className="px-4 py-3">R$ {p.precoVenda.toFixed(2)}</td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-2 py-2 sm:px-4 sm:py-3">{p.descricao}</td>
+                      <td className="px-2 py-2 sm:px-4 sm:py-3 hidden sm:table-cell">{p.marca}</td>
+                      <td className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">{p.modelo}</td>
+                      <td className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">{p.amperagem}</td>
+                      <td className="px-2 py-2 sm:px-4 sm:py-3 hidden sm:table-cell">R$ {p.precoCusto.toFixed(2)}</td>
+                      <td className="px-2 py-2 sm:px-4 sm:py-3">R$ {p.precoVenda.toFixed(2)}</td>
+                      <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
                         <div className="flex justify-end gap-1">
                           <button
                             onClick={() => iniciarEdicao(p)}

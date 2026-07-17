@@ -48,7 +48,7 @@ function ListaFornecedor() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-slate-800">Fornecedores</h1>
-        <Link to="/fornecedores/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+        <Link to="/fornecedores/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
           + Novo Fornecedor
         </Link>
       </div>
@@ -56,26 +56,26 @@ function ListaFornecedor() {
       <BarraBusca busca={busca} onBuscaChange={setBusca} ordem={ordem} onAlternarOrdem={alternarOrdem} placeholder="Pesquisar fornecedor pelo nome..." />
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-3">Razão Social</th>
-              <th className="px-4 py-3">CNPJ</th>
-              <th className="px-4 py-3">Contato</th>
-              <th className="px-4 py-3">Telefone</th>
-              <th className="px-4 py-3">Email</th>
-              <th className="px-4 py-3 text-right">Ações</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Razão Social</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden sm:table-cell">CNPJ</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Contato</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Telefone</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">Email</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
             {itensPaginados.map((f) => (
               <tr key={f.idFornecedor} className="border-t">
-                <td className="px-4 py-3">{f.razaoSocial}</td>
-                <td className="px-4 py-3">{f.cnpj}</td>
-                <td className="px-4 py-3">{f.contato}</td>
-                <td className="px-4 py-3">{f.telefone}</td>
-                <td className="px-4 py-3">{f.email}</td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{f.razaoSocial}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 hidden sm:table-cell">{f.cnpj}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{f.contato}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{f.telefone}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">{f.email}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
                   <div className="flex justify-end gap-1">
                     <Link to={`/fornecedores/${f.idFornecedor}/editar`} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
                       <Pencil size={16} />

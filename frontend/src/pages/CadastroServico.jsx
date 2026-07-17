@@ -49,7 +49,7 @@ function CadastroServico() {
         <Campo label="Descrição" name="descricao" value={form.descricao} onChange={handleChange} />
         <Campo label="Valor (referência)" name="valor" type="number" value={form.valor} onChange={handleChange} />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Campo label="Preço de Venda" name="preco" type="number" value={form.preco} onChange={handleChange} />
           <Campo label="Tempo Estimado (min)" name="tempoEstimado" type="number" value={form.tempoEstimado} onChange={handleChange} />
         </div>

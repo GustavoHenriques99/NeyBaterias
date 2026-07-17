@@ -46,7 +46,7 @@ function Estoque() {
         <h1 className="text-2xl font-bold text-slate-800">Estoque</h1>
         <Link
           to="/reposicoes"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700"
+          className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700"
         >
           Ver Reposições
         </Link>
@@ -54,15 +54,15 @@ function Estoque() {
 
       {/* Saldo por produto */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
-        <div className="px-4 py-3 border-b">
+        <div className="px-2 py-2 sm:px-4 sm:py-3 border-b">
           <h2 className="text-sm font-semibold text-slate-700">Saldo por Produto</h2>
         </div>
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-3">Produto</th>
-              <th className="px-4 py-3">Saldo Atual</th>
-              <th className="px-4 py-3"></th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Produto</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Saldo Atual</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3"></th>
             </tr>
           </thead>
           <tbody>
@@ -77,8 +77,8 @@ function Estoque() {
                     ativo ? "bg-blue-50" : ""
                   }`}
                 >
-                  <td className="px-4 py-3">{s.descricao}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 sm:px-4 sm:py-3">{s.descricao}</td>
+                  <td className="px-2 py-2 sm:px-4 sm:py-3">
                     <span
                       className={`font-medium ${
                         baixo ? "text-red-600" : "text-slate-800"
@@ -87,7 +87,7 @@ function Estoque() {
                       {s.saldo}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 sm:px-4 sm:py-3">
                     {baixo && (
                       <span className="inline-flex items-center gap-1 text-xs font-medium text-red-600">
                         <AlertTriangle size={14} />
@@ -107,7 +107,7 @@ function Estoque() {
 
       {/* Histórico de movimentações */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="px-4 py-3 border-b flex items-center justify-between">
+        <div className="px-2 py-2 sm:px-4 sm:py-3 border-b flex items-center justify-between">
           <h2 className="text-sm font-semibold text-slate-700">
             Histórico de Movimentações
             {produtoFiltro !== null && (
@@ -126,21 +126,21 @@ function Estoque() {
             </button>
           )}
         </div>
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-3">Data</th>
-              <th className="px-4 py-3">Produto</th>
-              <th className="px-4 py-3">Tipo</th>
-              <th className="px-4 py-3">Qtd</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Data</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Produto</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Tipo</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Qtd</th>
             </tr>
           </thead>
           <tbody>
             {movimentosFiltrados.map((m) => (
               <tr key={m.idEstoque} className="border-t">
-                <td className="px-4 py-3">{formatarData(m.dataMovimento)}</td>
-                <td className="px-4 py-3">{m.produto?.descricao}</td>
-                <td className="px-4 py-3">
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{formatarData(m.dataMovimento)}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{m.produto?.descricao}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">
                   <span
                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                       m.tipoMovimento === "Entrada"
@@ -156,7 +156,7 @@ function Estoque() {
                     {m.tipoMovimento}
                   </span>
                 </td>
-                <td className="px-4 py-3">{m.qtdMovimento}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{m.qtdMovimento}</td>
               </tr>
             ))}
           </tbody>

@@ -90,6 +90,67 @@ public class ClientesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = cliente.IdCliente }, MapearParaDto(cliente));
     }
 
+    [HttpPut("fisico/{id:int}")]
+    public async Task<IActionResult> UpdateFisico(int id, AtualizarClienteFisicoDto dto)
+    {
+        var cliente = await _uow.Clientes.Query()
+            .Include(c => c.ClienteFisico)
+            .FirstOrDefaultAsync(c => c.IdCliente == id);
+
+        if (cliente is null || cliente.ClienteFisico is null) return NotFound();
+
+        cliente.ClienteFisico.Cpf = Normalizar(dto.Cpf);
+        cliente.ClienteFisico.Nome = dto.Nome;
+        cliente.ClienteFisico.Email = Normalizar(dto.Email);
+        cliente.ClienteFisico.DataNascimento = dto.DataNascimento;
+        cliente.ClienteFisico.Telefone = Normalizar(dto.Telefone);
+        cliente.ClienteFisico.Cep = Normalizar(dto.Cep);
+        cliente.ClienteFisico.Endereco = dto.Endereco;
+        cliente.ClienteFisico.Numero = dto.Numero;
+        cliente.ClienteFisico.Complemento = Normalizar(dto.Complemento);
+        cliente.ClienteFisico.Cidade = dto.Cidade;
+
+        await _uow.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [HttpPut("juridico/{id:int}")]
+    public async Task<IActionResult> UpdateJuridico(int id, AtualizarClienteJuridicoDto dto)
+    {
+        var cliente = await _uow.Clientes.Query()
+            .Include(c => c.ClienteJuridico)
+            .FirstOrDefaultAsync(c => c.IdCliente == id);
+
+        if (cliente is null || cliente.ClienteJuridico is null) return NotFound();
+
+        cliente.ClienteJuridico.Cnpj = Normalizar(dto.Cnpj);
+        cliente.ClienteJuridico.RazaoSocial = dto.RazaoSocial;
+        cliente.ClienteJuridico.NomeFantasia = Normalizar(dto.NomeFantasia);
+        cliente.ClienteJuridico.Ie = Normalizar(dto.Ie);
+        cliente.ClienteJuridico.ImTelefone = Normalizar(dto.ImTelefone);
+        cliente.ClienteJuridico.TelCelular = Normalizar(dto.TelCelular);
+
+        await _uow.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [HttpPut("{id:int}/ativar")]
+    public async Task<IActionResult> Ativar(int id) => await AlterarStatus(id, true);
+
+    [HttpPut("{id:int}/desativar")]
+    public async Task<IActionResult> Desativar(int id) => await AlterarStatus(id, false);
+
+    private async Task<IActionResult> AlterarStatus(int id, bool ativo)
+    {
+        var cliente = await _uow.Clientes.GetByIdAsync(id);
+        if (cliente is null) return NotFound();
+
+        cliente.Ativo = ativo;
+        _uow.Clientes.Update(cliente);
+        await _uow.SaveChangesAsync();
+        return NoContent();
+    }
+
     // Campos opcionais com índice único (Cpf/Cnpj) precisam virar NULL quando vazios,
     // senão duas strings vazias ("") batem na constraint UNIQUE do banco.
     private static string? Normalizar(string? valor) =>
@@ -103,7 +164,16 @@ public class ClientesController : ControllerBase
         if (cliente is null) return NotFound();
 
         _uow.Clientes.Remove(cliente);
-        await _uow.SaveChangesAsync();
+
+        try
+        {
+            await _uow.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            return Conflict(new { erro = "Não é possível excluir: este cliente possui vendas registradas. Inative-o em vez de excluir." });
+        }
+
         return NoContent();
     }
 
@@ -120,7 +190,12 @@ public class ClientesController : ControllerBase
                 Cpf = cliente.ClienteFisico.Cpf,
                 Nome = cliente.ClienteFisico.Nome,
                 Email = cliente.ClienteFisico.Email,
+                DataNascimento = cliente.ClienteFisico.DataNascimento,
                 Telefone = cliente.ClienteFisico.Telefone,
+                Cep = cliente.ClienteFisico.Cep,
+                Endereco = cliente.ClienteFisico.Endereco,
+                Numero = cliente.ClienteFisico.Numero,
+                Complemento = cliente.ClienteFisico.Complemento,
                 Cidade = cliente.ClienteFisico.Cidade
             };
         }
@@ -135,7 +210,10 @@ public class ClientesController : ControllerBase
                 Tipo = "Juridico",
                 Cnpj = cliente.ClienteJuridico.Cnpj,
                 RazaoSocial = cliente.ClienteJuridico.RazaoSocial,
-                NomeFantasia = cliente.ClienteJuridico.NomeFantasia
+                NomeFantasia = cliente.ClienteJuridico.NomeFantasia,
+                Ie = cliente.ClienteJuridico.Ie,
+                ImTelefone = cliente.ClienteJuridico.ImTelefone,
+                TelCelular = cliente.ClienteJuridico.TelCelular
             };
         }
 

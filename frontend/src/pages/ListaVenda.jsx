@@ -56,7 +56,7 @@ function ListaVenda() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-slate-800">Vendas</h1>
-        <Link to="/vendas/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+        <Link to="/vendas/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
           + Nova Venda
         </Link>
       </div>
@@ -64,30 +64,30 @@ function ListaVenda() {
       <BarraBusca busca={busca} onBuscaChange={setBusca} ordem={ordem} onAlternarOrdem={alternarOrdem} placeholder="Pesquisar venda pelo nome do cliente..." />
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-3">Data</th>
-              <th className="px-4 py-3">Cliente</th>
-              <th className="px-4 py-3">Operador</th>
-              <th className="px-4 py-3">Pagamento</th>
-              <th className="px-4 py-3">Itens</th>
-              <th className="px-4 py-3">Desconto</th>
-              <th className="px-4 py-3">Total</th>
-              <th className="px-4 py-3 text-right">Ações</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Data</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Cliente</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">Operador</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden sm:table-cell">Pagamento</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">Itens</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 hidden lg:table-cell">Desconto</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Total</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
             {itensPaginados.map((v) => (
               <tr key={v.idVenda} className="border-t">
-                <td className="px-4 py-3">{formatarData(v.dataVenda)}</td>
-                <td className="px-4 py-3">{v.clienteNome}</td>
-                <td className="px-4 py-3">{v.operadorNome}</td>
-                <td className="px-4 py-3">{v.formaPagamentoDescricao}</td>
-                <td className="px-4 py-3">{v.itens.length} {v.itens.length === 1 ? "item" : "itens"}</td>
-                <td className="px-4 py-3">{formatarMoeda(v.desconto)}</td>
-                <td className="px-4 py-3 font-medium text-slate-800">{formatarMoeda(v.precoTotal)}</td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{formatarData(v.dataVenda)}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{v.clienteNome}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">{v.operadorNome}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 hidden sm:table-cell">{v.formaPagamentoDescricao}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">{v.itens.length} {v.itens.length === 1 ? "item" : "itens"}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 hidden lg:table-cell">{formatarMoeda(v.desconto)}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 font-medium text-slate-800">{formatarMoeda(v.precoTotal)}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
                   <button onClick={() => setItemParaExcluir(v)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
                     <Trash2 size={16} />
                   </button>

@@ -19,6 +19,14 @@ public class CriarServicoDto
     public int TempoEstimado { get; set; }
 }
 
+public class AtualizarServicoDto
+{
+    public string Descricao { get; set; } = string.Empty;
+    public decimal Valor { get; set; }
+    public decimal Preco { get; set; }
+    public int TempoEstimado { get; set; }
+}
+
 
 public class ItemRespostaDto
 {

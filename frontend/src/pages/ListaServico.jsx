@@ -52,7 +52,7 @@ function ListaServico() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-slate-800">Serviços</h1>
-        <Link to="/servicos/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+        <Link to="/servicos/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
           + Novo Serviço
         </Link>
       </div>
@@ -60,22 +60,22 @@ function ListaServico() {
       <BarraBusca busca={busca} onBuscaChange={setBusca} ordem={ordem} onAlternarOrdem={alternarOrdem} placeholder="Pesquisar serviço pelo nome..." />
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-3">Descrição</th>
-              <th className="px-4 py-3">Preço</th>
-              <th className="px-4 py-3">Tempo Estimado</th>
-              <th className="px-4 py-3 text-right">Ações</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Descrição</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Preço</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Tempo Estimado</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
             {itensPaginados.map((s) => (
               <tr key={s.idServico} className="border-t">
-                <td className="px-4 py-3">{s.descricao}</td>
-                <td className="px-4 py-3">{formatarMoeda(s.preco)}</td>
-                <td className="px-4 py-3">{s.tempoEstimado} min</td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{s.descricao}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{formatarMoeda(s.preco)}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{s.tempoEstimado} min</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
                   <div className="flex justify-end gap-1">
                     <Link to={`/servicos/${s.idServico}/editar`} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
                       <Pencil size={16} />

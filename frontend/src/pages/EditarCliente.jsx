@@ -100,12 +100,12 @@ function EditarCliente() {
             <Campo label="Email" name="email" type="email" value={formFisico.email} onChange={handleChangeFisico} obrigatorio={false} />
             <Campo label="Data de Nascimento" name="dataNascimento" type="date" value={formFisico.dataNascimento} onChange={handleChangeFisico} obrigatorio={false} />
             <Campo label="Telefone" name="telefone" value={formFisico.telefone} onChange={handleChangeFisico} obrigatorio={false} />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Campo label="CEP" name="cep" value={formFisico.cep} onChange={handleChangeFisico} obrigatorio={false} />
               <Campo label="Número" name="numero" value={formFisico.numero} onChange={handleChangeFisico} />
             </div>
             <Campo label="Endereço" name="endereco" value={formFisico.endereco} onChange={handleChangeFisico} />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Campo label="Complemento" name="complemento" value={formFisico.complemento} onChange={handleChangeFisico} obrigatorio={false} />
               <Campo label="Cidade" name="cidade" value={formFisico.cidade} onChange={handleChangeFisico} />
             </div>
@@ -116,7 +116,7 @@ function EditarCliente() {
             <Campo label="Nome Fantasia" name="nomeFantasia" value={formJuridico.nomeFantasia} onChange={handleChangeJuridico} obrigatorio={false} />
             <Campo label="CNPJ" name="cnpj" value={formJuridico.cnpj} onChange={handleChangeJuridico} obrigatorio={false} />
             <Campo label="Inscrição Estadual" name="ie" value={formJuridico.ie} onChange={handleChangeJuridico} obrigatorio={false} />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Campo label="Telefone Fixo" name="imTelefone" value={formJuridico.imTelefone} onChange={handleChangeJuridico} obrigatorio={false} />
               <Campo label="Celular" name="telCelular" value={formJuridico.telCelular} onChange={handleChangeJuridico} obrigatorio={false} />
             </div>

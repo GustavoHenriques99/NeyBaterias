@@ -63,12 +63,12 @@ function EditarProduto() {
       <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 space-y-4">
         <Campo label="Descrição" name="descricao" value={form.descricao} onChange={handleChange} />
         <Campo label="Valor (referência)" name="valor" type="number" value={form.valor} onChange={handleChange} />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Campo label="Amperagem" name="amperagem" value={form.amperagem} onChange={handleChange} />
           <Campo label="Marca" name="marca" value={form.marca} onChange={handleChange} />
         </div>
         <Campo label="Modelo" name="modelo" value={form.modelo} onChange={handleChange} />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Campo label="Preço de Custo" name="precoCusto" type="number" value={form.precoCusto} onChange={handleChange} />
           <Campo label="Preço de Venda" name="precoVenda" type="number" value={form.precoVenda} onChange={handleChange} />
         </div>

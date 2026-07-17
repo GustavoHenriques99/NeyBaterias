@@ -45,7 +45,7 @@ function CadastroFornecedor() {
         <Campo label="Razão Social" name="razaoSocial" value={form.razaoSocial} onChange={handleChange} />
         <Campo label="CNPJ" name="cnpj" value={form.cnpj} onChange={handleChange} />
         <Campo label="Contato" name="contato" value={form.contato} onChange={handleChange} />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Campo label="Telefone" name="telefone" value={form.telefone} onChange={handleChange} />
           <Campo label="Email" name="email" type="email" value={form.email} onChange={handleChange} />
         </div>

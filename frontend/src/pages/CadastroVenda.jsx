@@ -155,7 +155,7 @@ function CadastroVenda() {
       <h1 className="text-2xl font-bold text-slate-800 mb-6">Nova Venda</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="bg-white rounded-xl shadow-sm p-6 grid grid-cols-3 gap-4">
+        <div className="bg-white rounded-xl shadow-sm p-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm text-slate-600 mb-1">Cliente</label>
             <select

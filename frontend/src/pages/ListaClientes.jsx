@@ -51,7 +51,7 @@ function ListaClientes() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-slate-800">Clientes</h1>
-        <Link to="/clientes/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+        <Link to="/clientes/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
           + Novo Cliente
         </Link>
       </div>
@@ -59,32 +59,32 @@ function ListaClientes() {
       <BarraBusca busca={busca} onBuscaChange={setBusca} ordem={ordem} onAlternarOrdem={alternarOrdem} placeholder="Pesquisar cliente pelo nome..." />
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-3">Nome / Razão Social</th>
-              <th className="px-4 py-3">Tipo</th>
-              <th className="px-4 py-3">CPF / CNPJ</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3 text-right">Ações</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Nome / Razão Social</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Tipo</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">CPF / CNPJ</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3">Status</th>
+              <th className="px-2 py-2 sm:px-4 sm:py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
             {itensPaginados.map((c) => (
               <tr key={c.idCliente} className="border-t">
-                <td className="px-4 py-3">{c.tipo === "Fisico" ? c.nome : c.razaoSocial}</td>
-                <td className="px-4 py-3">
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{c.tipo === "Fisico" ? c.nome : c.razaoSocial}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${c.tipo === "Fisico" ? "bg-blue-100 text-blue-700" : "bg-violet-100 text-violet-700"}`}>
                     {c.tipo === "Fisico" ? "Pessoa Física" : "Pessoa Jurídica"}
                   </span>
                 </td>
-                <td className="px-4 py-3">{c.tipo === "Fisico" ? c.cpf : c.cnpj}</td>
-                <td className="px-4 py-3">
+                <td className="px-2 py-2 sm:px-4 sm:py-3">{c.tipo === "Fisico" ? c.cpf : c.cnpj}</td>
+                <td className="px-2 py-2 sm:px-4 sm:py-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${c.ativo ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
                     {c.ativo ? "Ativo" : "Inativo"}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
                   <div className="flex justify-end gap-1">
                     <Link to={`/clientes/${c.idCliente}/editar`} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
                       <Pencil size={16} />
