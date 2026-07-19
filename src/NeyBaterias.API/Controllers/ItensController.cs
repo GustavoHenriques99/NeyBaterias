@@ -6,7 +6,7 @@ using NeyBaterias.Application.Interfaces;
 
 namespace NeyBaterias.API.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Nivel1")]
 [ApiController]
 [Route("api/[controller]")]
 public class ItensController : ControllerBase

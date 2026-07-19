@@ -5,7 +5,7 @@ using NeyBaterias.Domain.Entities;
 
 namespace NeyBaterias.API.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Nivel1")]
 [ApiController]
 [Route("api/[controller]")]
 public class FormasPagamentoController : ControllerBase
@@ -25,6 +25,7 @@ public class FormasPagamentoController : ControllerBase
         return forma is null ? NotFound() : Ok(forma);
     }
 
+    [Authorize(Policy = "Nivel2")]
     [HttpPost]
     public async Task<ActionResult<FormaPagamento>> Create(FormaPagamento forma)
     {
@@ -33,6 +34,7 @@ public class FormasPagamentoController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = forma.IdPagamento }, forma);
     }
 
+    [Authorize(Policy = "Nivel3")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -45,6 +47,7 @@ public class FormasPagamentoController : ControllerBase
     }
 
 
+    [Authorize(Policy = "Nivel3")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, FormaPagamento forma)
     {

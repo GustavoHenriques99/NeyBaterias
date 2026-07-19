@@ -8,7 +8,7 @@ using NeyBaterias.Domain.Enums;
 
 namespace NeyBaterias.API.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Nivel1")]
 [ApiController]
 [Route("api/[controller]")]
 public class ServicosController : ControllerBase
@@ -31,6 +31,7 @@ public class ServicosController : ControllerBase
         return servico is null ? NotFound() : Ok(servico);
     }
 
+    [Authorize(Policy = "Nivel2")]
     [HttpPost]
     public async Task<ActionResult<Servico>> Create(CriarServicoDto dto)
     {
@@ -53,6 +54,7 @@ public class ServicosController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = item.Servico.IdServico }, item.Servico);
     }
 
+    [Authorize(Policy = "Nivel3")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, AtualizarServicoDto dto)
     {
@@ -75,6 +77,7 @@ public class ServicosController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "Nivel3")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {

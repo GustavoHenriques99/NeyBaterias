@@ -7,7 +7,7 @@ using NeyBaterias.Domain.Entities;
 
 namespace NeyBaterias.API.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Nivel1")]
 [ApiController]
 [Route("api/[controller]")]
 public class VendasController : ControllerBase
@@ -50,6 +50,7 @@ public class VendasController : ControllerBase
         return venda is null ? NotFound() : Ok(MapearParaDto(venda));
     }
 
+    [Authorize(Policy = "Nivel2")]
     [HttpPost]
     public async Task<IActionResult> Create(CriarVendaDto dto)
     {
@@ -73,6 +74,7 @@ public class VendasController : ControllerBase
     }
 
 
+    [Authorize(Policy = "Nivel3")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {

@@ -5,7 +5,7 @@ using NeyBaterias.Domain.Entities;
 
 namespace NeyBaterias.API.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Nivel1")]
 [ApiController]
 [Route("api/[controller]")]
 public class FornecedoresController : ControllerBase
@@ -25,6 +25,7 @@ public class FornecedoresController : ControllerBase
         return fornecedor is null ? NotFound() : Ok(fornecedor);
     }
 
+    [Authorize(Policy = "Nivel2")]
     [HttpPost]
     public async Task<ActionResult<Fornecedor>> Create(Fornecedor fornecedor)
     {
@@ -33,6 +34,7 @@ public class FornecedoresController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = fornecedor.IdFornecedor }, fornecedor);
     }
 
+    [Authorize(Policy = "Nivel3")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, Fornecedor fornecedor)
     {
@@ -46,6 +48,7 @@ public class FornecedoresController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "Nivel3")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
