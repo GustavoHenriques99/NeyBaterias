@@ -90,8 +90,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Nivel3", policy =>
         policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 3));
 
-    options.AddPolicy("Nivel4", policy =>
-        policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 4));
+    //options.AddPolicy("Nivel4", policy =>
+        //policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 4));
 
     // Mantido como sinônimo de Nivel4 para não quebrar código existente que
     // ainda referencia "Administrador" diretamente.
