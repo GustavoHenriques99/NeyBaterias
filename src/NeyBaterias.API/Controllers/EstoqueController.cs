@@ -6,7 +6,7 @@ using NeyBaterias.Domain.Enums;
 
 namespace NeyBaterias.API.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Nivel1")]
 [ApiController]
 [Route("api/[controller]")]
 public class EstoqueController : ControllerBase

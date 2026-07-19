@@ -6,7 +6,7 @@ using NeyBaterias.Application.Interfaces;
 
 namespace NeyBaterias.API.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Nivel1")]
 [ApiController]
 [Route("api/[controller]")]
 public class ComprasReposicaoController : ControllerBase
@@ -43,6 +43,7 @@ public class ComprasReposicaoController : ControllerBase
     /// Registra uma compra de reposição (cabeçalho + itens) e gera automaticamente
     /// as entradas de estoque para os produtos repostos.
     /// </summary>
+    [Authorize(Policy = "Nivel2")]
     [HttpPost]
     public async Task<IActionResult> Create(CriarCompraReposicaoDto dto)
     {
@@ -59,6 +60,7 @@ public class ComprasReposicaoController : ControllerBase
 
 
 
+    [Authorize(Policy = "Nivel3")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {

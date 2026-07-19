@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-import { getFornecedores, deletarFornecedor } from "../services/api";
+import { getFornecedores, deletarFornecedor, podeCadastrar, podeEditar, podeExcluir } from "../services/api";
 import { useFiltroLista } from "../hooks/useFiltroLista";
 import BarraBusca from "../components/BarraBusca";
 import Paginacao from "../components/Paginacao";
@@ -48,9 +48,11 @@ function ListaFornecedor() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-slate-800">Fornecedores</h1>
-        <Link to="/fornecedores/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
-          + Novo Fornecedor
-        </Link>
+        {podeCadastrar() && (
+          <Link to="/fornecedores/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+            + Novo Fornecedor
+          </Link>
+        )}
       </div>
 
       <BarraBusca busca={busca} onBuscaChange={setBusca} ordem={ordem} onAlternarOrdem={alternarOrdem} placeholder="Pesquisar fornecedor pelo nome..." />
@@ -77,12 +79,16 @@ function ListaFornecedor() {
                 <td className="px-2 py-2 sm:px-4 sm:py-3 hidden md:table-cell">{f.email}</td>
                 <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
                   <div className="flex justify-end gap-1">
-                    <Link to={`/fornecedores/${f.idFornecedor}/editar`} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
-                      <Pencil size={16} />
-                    </Link>
-                    <button onClick={() => setItemParaExcluir(f)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
-                      <Trash2 size={16} />
-                    </button>
+                    {podeEditar() && (
+                      <Link to={`/fornecedores/${f.idFornecedor}/editar`} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
+                        <Pencil size={16} />
+                      </Link>
+                    )}
+                    {podeExcluir() && (
+                      <button onClick={() => setItemParaExcluir(f)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
+                        <Trash2 size={16} />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

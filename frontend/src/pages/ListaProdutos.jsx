@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Pencil, Check, X, Search, Trash2 } from "lucide-react";
-import { getProdutos, atualizarProduto, deletarProduto } from "../services/api";
+import { getProdutos, atualizarProduto, deletarProduto, podeCadastrar, podeEditar, podeExcluir } from "../services/api";
 import ConfirmarExclusao from "../components/ConfirmarExclusao";
 
 function ListaProdutos() {
@@ -96,12 +96,14 @@ function ListaProdutos() {
     <div>
       <div className="flex items-center justify-between mb-4 gap-4">
         <h1 className="text-2xl font-bold">Produtos</h1>
-        <Link
-          to="/produtos/novo"
-          className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700 whitespace-nowrap"
-        >
-          + Novo Produto
-        </Link>
+        {podeCadastrar() && (
+          <Link
+            to="/produtos/novo"
+            className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700 whitespace-nowrap"
+          >
+            + Novo Produto
+          </Link>
+        )}
       </div>
 
       <div className="relative mb-4 max-w-sm">
@@ -186,20 +188,24 @@ function ListaProdutos() {
                       <td className="px-2 py-2 sm:px-4 sm:py-3">R$ {p.precoVenda.toFixed(2)}</td>
                       <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
                         <div className="flex justify-end gap-1">
-                          <button
-                            onClick={() => iniciarEdicao(p)}
-                            title="Editar"
-                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500"
-                          >
-                            <Pencil size={16} />
-                          </button>
-                          <button
-                            onClick={() => setProdutoParaExcluir(p)}
-                            title="Excluir"
-                            className="p-1.5 rounded-lg hover:bg-red-50 text-red-500"
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                          {podeEditar() && (
+                            <button
+                              onClick={() => iniciarEdicao(p)}
+                              title="Editar"
+                              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500"
+                            >
+                              <Pencil size={16} />
+                            </button>
+                          )}
+                          {podeExcluir() && (
+                            <button
+                              onClick={() => setProdutoParaExcluir(p)}
+                              title="Excluir"
+                              className="p-1.5 rounded-lg hover:bg-red-50 text-red-500"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </>

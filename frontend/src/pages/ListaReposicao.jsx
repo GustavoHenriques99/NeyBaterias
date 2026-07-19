@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { Trash2 } from "lucide-react";
-import { getComprasReposicao, deletarReposicao } from "../services/api";
+import { getComprasReposicao, deletarReposicao, podeCadastrar, podeExcluir } from "../services/api";
 import { useFiltroLista } from "../hooks/useFiltroLista";
 import BarraBusca from "../components/BarraBusca";
 import Paginacao from "../components/Paginacao";
@@ -56,9 +56,11 @@ function ListaReposicao() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-slate-800">Reposições de Estoque</h1>
-        <Link to="/reposicoes/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
-          + Nova Reposição
-        </Link>
+        {podeCadastrar() && (
+          <Link to="/reposicoes/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+            + Nova Reposição
+          </Link>
+        )}
       </div>
 
       <BarraBusca busca={busca} onBuscaChange={setBusca} ordem={ordem} onAlternarOrdem={alternarOrdem} placeholder="Pesquisar reposição pelo nome do fornecedor..." />
@@ -82,9 +84,11 @@ function ListaReposicao() {
                 <td className="px-2 py-2 sm:px-4 sm:py-3">{r.itensReposicao.length} {r.itensReposicao.length === 1 ? "produto" : "produtos"}</td>
                 <td className="px-2 py-2 sm:px-4 sm:py-3 font-medium text-slate-800">{formatarMoeda(r.preco)}</td>
                 <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
-                  <button onClick={() => setItemParaExcluir(r)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
-                    <Trash2 size={16} />
-                  </button>
+                  {podeExcluir() && (
+                    <button onClick={() => setItemParaExcluir(r)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
+                      <Trash2 size={16} />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -111,6 +111,32 @@ export function estaAutenticado() {
   return true;
 }
 
+// Níveis de acesso do sistema:
+// 1 - Ler
+// 2 - Ler, Cadastrar
+// 3 - Ler, Cadastrar, Atualizar, Excluir
+// 4 - Tudo do 3 + gestão de operadores/senhas e configurações sensíveis (Administrador)
+export function getNivelAcesso() {
+  const usuario = getUsuarioLogado();
+  return usuario?.nivelAcesso ?? 0;
+}
+
+export function podeCadastrar() {
+  return getNivelAcesso() >= 2;
+}
+
+export function podeEditar() {
+  return getNivelAcesso() >= 3;
+}
+
+export function podeExcluir() {
+  return getNivelAcesso() >= 3;
+}
+
+export function ehAdministrador() {
+  return getNivelAcesso() >= 4;
+}
+
 
 export function getProdutos() {
   return get("/produtos");

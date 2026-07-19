@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
-import { getVendas, deletarVenda } from "../services/api";
+import { getVendas, deletarVenda, podeCadastrar, podeExcluir } from "../services/api";
 import { useFiltroLista } from "../hooks/useFiltroLista";
 import BarraBusca from "../components/BarraBusca";
 import Paginacao from "../components/Paginacao";
@@ -56,9 +56,11 @@ function ListaVenda() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-slate-800">Vendas</h1>
-        <Link to="/vendas/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
-          + Nova Venda
-        </Link>
+        {podeCadastrar() && (
+          <Link to="/vendas/novo" className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+            + Nova Venda
+          </Link>
+        )}
       </div>
 
       <BarraBusca busca={busca} onBuscaChange={setBusca} ordem={ordem} onAlternarOrdem={alternarOrdem} placeholder="Pesquisar venda pelo nome do cliente..." />
@@ -88,9 +90,11 @@ function ListaVenda() {
                 <td className="px-2 py-2 sm:px-4 sm:py-3 hidden lg:table-cell">{formatarMoeda(v.desconto)}</td>
                 <td className="px-2 py-2 sm:px-4 sm:py-3 font-medium text-slate-800">{formatarMoeda(v.precoTotal)}</td>
                 <td className="px-2 py-2 sm:px-4 sm:py-3 text-right">
-                  <button onClick={() => setItemParaExcluir(v)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
-                    <Trash2 size={16} />
-                  </button>
+                  {podeExcluir() && (
+                    <button onClick={() => setItemParaExcluir(v)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
+                      <Trash2 size={16} />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

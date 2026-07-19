@@ -7,7 +7,7 @@ using NeyBaterias.Domain.Entities;
 
 namespace NeyBaterias.API.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Nivel1")]
 [ApiController]
 [Route("api/[controller]")]
 public class ClientesController : ControllerBase
@@ -38,6 +38,7 @@ public class ClientesController : ControllerBase
         return cliente is null ? NotFound() : Ok(MapearParaDto(cliente));
     }
 
+    [Authorize(Policy = "Nivel2")]
     [HttpPost("fisico")]
     public async Task<ActionResult<ClienteRespostaDto>> CreateFisico(CriarClienteFisicoDto dto)
     {
@@ -66,6 +67,7 @@ public class ClientesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = cliente.IdCliente }, MapearParaDto(cliente));
     }
 
+    [Authorize(Policy = "Nivel2")]
     [HttpPost("juridico")]
     public async Task<ActionResult<ClienteRespostaDto>> CreateJuridico(CriarClienteJuridicoDto dto)
     {
@@ -90,6 +92,7 @@ public class ClientesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = cliente.IdCliente }, MapearParaDto(cliente));
     }
 
+    [Authorize(Policy = "Nivel3")]
     [HttpPut("fisico/{id:int}")]
     public async Task<IActionResult> UpdateFisico(int id, AtualizarClienteFisicoDto dto)
     {
@@ -114,6 +117,7 @@ public class ClientesController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "Nivel3")]
     [HttpPut("juridico/{id:int}")]
     public async Task<IActionResult> UpdateJuridico(int id, AtualizarClienteJuridicoDto dto)
     {
@@ -134,9 +138,11 @@ public class ClientesController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "Nivel3")]
     [HttpPut("{id:int}/ativar")]
     public async Task<IActionResult> Ativar(int id) => await AlterarStatus(id, true);
 
+    [Authorize(Policy = "Nivel3")]
     [HttpPut("{id:int}/desativar")]
     public async Task<IActionResult> Desativar(int id) => await AlterarStatus(id, false);
 
@@ -157,6 +163,7 @@ public class ClientesController : ControllerBase
         string.IsNullOrWhiteSpace(valor) ? null : valor.Trim();
 
 
+    [Authorize(Policy = "Nivel3")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {

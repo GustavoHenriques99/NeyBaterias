@@ -73,13 +73,37 @@ builder.Services.AddAuthentication(options =>
 });
 
 
+// Sistema de níveis de acesso:
+// 1 - Ler
+// 2 - Ler, Cadastrar
+// 3 - Ler, Cadastrar, Atualizar, Excluir
+// 4 - Tudo do nível 3 + ações/campos sensíveis (gestão de operadores, senhas,
+//     configurações da empresa) — exclusivo do administrador do sistema.
 builder.Services.AddAuthorization(options =>
 {
+    options.AddPolicy("Nivel1", policy =>
+        policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 1));
+
+    options.AddPolicy("Nivel2", policy =>
+        policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 2));
+
+    options.AddPolicy("Nivel3", policy =>
+        policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 3));
+
+    options.AddPolicy("Nivel4", policy =>
+        policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 4));
+
+    // Mantido como sinônimo de Nivel4 para não quebrar código existente que
+    // ainda referencia "Administrador" diretamente.
     options.AddPolicy("Administrador", policy =>
-        policy.RequireAssertion(context =>
-            context.User.HasClaim(c => c.Type == "nivelAcesso") &&
-            int.Parse(context.User.FindFirst("nivelAcesso")!.Value) >= 2));
+        policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 4));
 });
+
+static int NivelAcessoDoUsuario(System.Security.Claims.ClaimsPrincipal user)
+{
+    var claim = user.FindFirst("nivelAcesso");
+    return claim is not null && int.TryParse(claim.Value, out var nivel) ? nivel : 0;
+}
 
 var app = builder.Build();
 
