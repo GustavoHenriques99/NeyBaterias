@@ -12,7 +12,7 @@ public class ClienteFisico
     public string Endereco { get; set; } = string.Empty;
     public string Numero { get; set; } = string.Empty;
     public string? Complemento { get; set; }
-    public string Cidade { get; set; } = string.Empty;
+    public string? Cidade { get; set; }
 
     public int IdCliente { get; set; }
     public Cliente Cliente { get; set; } = null!;

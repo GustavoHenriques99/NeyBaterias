@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { login } from "../services/api";
 
 function Login() {
@@ -7,7 +7,10 @@ function Login() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState(null);
   const [entrando, setEntrando] = useState(false);
+  const [mostrarAjudaSenha, setMostrarAjudaSenha] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const sessaoExpirada = searchParams.get("sessaoExpirada") === "1";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,9 +28,15 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900">
+    <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4">
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-bold text-white text-center mb-6">NeyBaterias</h1>
+
+        {sessaoExpirada && (
+          <div className="bg-amber-50 border border-amber-200 text-amber-700 text-sm rounded-lg px-4 py-3 mb-4">
+            Sua sessão expirou. Faça login novamente.
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 space-y-4">
           <div>
@@ -43,7 +52,21 @@ function Login() {
           </div>
 
           <div>
-            <label className="block text-sm text-slate-600 mb-1">Senha</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-sm text-slate-600">Senha</label>
+              <button
+                type="button"
+                onClick={() => setMostrarAjudaSenha((v) => !v)}
+                className="text-xs text-blue-600 hover:underline"
+              >
+                Esqueci minha senha
+              </button>
+            </div>
+            {mostrarAjudaSenha && (
+              <p className="text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 mb-2">
+                Fale com o administrador do sistema — ele pode redefinir sua senha em Configurações → Operadores.
+              </p>
+            )}
             <input
               type="password"
               required

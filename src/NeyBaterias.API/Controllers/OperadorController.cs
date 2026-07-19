@@ -93,6 +93,21 @@ public class OperadorController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id:int}/redefinir-senha")]
+    public async Task<IActionResult> RedefinirSenha(int id, RedefinirSenhaDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.NovaSenha) || dto.NovaSenha.Length < 4)
+            return BadRequest(new { erro = "A nova senha precisa ter pelo menos 4 caracteres." });
+
+        var operador = await _uow.Operador.GetByIdAsync(id);
+        if (operador is null) return NotFound();
+
+        operador.Senha = BCrypt.Net.BCrypt.HashPassword(dto.NovaSenha);
+        _uow.Operador.Update(operador);
+        await _uow.SaveChangesAsync();
+        return NoContent();
+    }
+
     private static OperadorRespostaDto MapearParaDto(Operador o) => new()
     {
         IdOperador = o.IdOperador,

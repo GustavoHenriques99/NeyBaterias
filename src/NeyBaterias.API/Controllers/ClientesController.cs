@@ -56,7 +56,7 @@ public class ClientesController : ControllerBase
                 Endereco = dto.Endereco,
                 Numero = dto.Numero,
                 Complemento = Normalizar(dto.Complemento),
-                Cidade = dto.Cidade
+                Cidade = Normalizar(dto.Cidade)
             }
         };
 
@@ -108,7 +108,7 @@ public class ClientesController : ControllerBase
         cliente.ClienteFisico.Endereco = dto.Endereco;
         cliente.ClienteFisico.Numero = dto.Numero;
         cliente.ClienteFisico.Complemento = Normalizar(dto.Complemento);
-        cliente.ClienteFisico.Cidade = dto.Cidade;
+        cliente.ClienteFisico.Cidade = Normalizar(dto.Cidade);
 
         await _uow.SaveChangesAsync();
         return NoContent();

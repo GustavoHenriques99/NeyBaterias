@@ -109,7 +109,7 @@ function CadastroCliente() {
             <Campo label="Endereço" name="endereco" value={formFisico.endereco} onChange={handleChangeFisico} />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Campo label="Complemento" name="complemento" value={formFisico.complemento} onChange={handleChangeFisico} obrigatorio={false} />
-              <Campo label="Cidade" name="cidade" value={formFisico.cidade} onChange={handleChangeFisico} />
+              <Campo label="Cidade" name="cidade" value={formFisico.cidade} onChange={handleChangeFisico} obrigatorio={false} />
             </div>
           </>
         ) : (

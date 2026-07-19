@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Pencil, Power, PowerOff } from "lucide-react";
+import { Pencil, Power, PowerOff, KeyRound } from "lucide-react";
 import {
   getOperadores,
   criarOperador,
   atualizarOperador,
   ativarOperador,
   desativarOperador,
+  redefinirSenhaOperador,
 } from "../../services/api";
 
 const FORM_INICIAL = {
@@ -30,6 +31,11 @@ function AbaOperadores() {
   const [editando, setEditando] = useState(null); // null = criando novo; objeto = editando esse operador
   const [form, setForm] = useState(FORM_INICIAL);
   const [salvando, setSalvando] = useState(false);
+
+  const [operadorSenha, setOperadorSenha] = useState(null); // operador cuja senha está sendo redefinida
+  const [novaSenha, setNovaSenha] = useState("");
+  const [redefinindo, setRedefinindo] = useState(false);
+  const [erroSenha, setErroSenha] = useState(null);
 
   function carregar() {
     setCarregando(true);
@@ -115,6 +121,25 @@ function AbaOperadores() {
       carregar();
     } catch (err) {
       setErro(err.message);
+    }
+  }
+
+  async function handleRedefinirSenha(e) {
+    e.preventDefault();
+    if (novaSenha.length < 4) {
+      setErroSenha("A senha precisa ter pelo menos 4 caracteres.");
+      return;
+    }
+    setRedefinindo(true);
+    setErroSenha(null);
+    try {
+      await redefinirSenhaOperador(operadorSenha.idOperador, novaSenha);
+      setOperadorSenha(null);
+      setNovaSenha("");
+    } catch (err) {
+      setErroSenha(err.message);
+    } finally {
+      setRedefinindo(false);
     }
   }
 
@@ -245,6 +270,17 @@ function AbaOperadores() {
                       <Pencil size={16} />
                     </button>
                     <button
+                      onClick={() => {
+                        setOperadorSenha(op);
+                        setNovaSenha("");
+                        setErroSenha(null);
+                      }}
+                      title="Redefinir senha"
+                      className="p-1.5 rounded-lg hover:bg-slate-100 text-blue-500"
+                    >
+                      <KeyRound size={16} />
+                    </button>
+                    <button
                       onClick={() => alternarStatus(op)}
                       title={op.ativo ? "Desativar" : "Ativar"}
                       className={`p-1.5 rounded-lg hover:bg-slate-100 ${
@@ -260,6 +296,46 @@ function AbaOperadores() {
           </tbody>
         </table>
       </div>
+
+      {operadorSenha && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+          <form
+            onSubmit={handleRedefinirSenha}
+            className="bg-white rounded-xl shadow-lg p-6 w-full max-w-sm space-y-4"
+          >
+            <h3 className="font-medium text-slate-800">
+              Redefinir senha de {operadorSenha.nome}
+            </h3>
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Nova senha</label>
+              <input
+                type="password"
+                autoFocus
+                value={novaSenha}
+                onChange={(e) => setNovaSenha(e.target.value)}
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            {erroSenha && <p className="text-sm text-red-600">{erroSenha}</p>}
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={redefinindo}
+                className="flex-1 bg-blue-600 text-white rounded-lg py-2 font-medium hover:bg-blue-700 disabled:opacity-50"
+              >
+                {redefinindo ? "Salvando..." : "Redefinir"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setOperadorSenha(null)}
+                className="flex-1 border border-slate-300 text-slate-600 rounded-lg py-2 font-medium hover:bg-slate-50"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

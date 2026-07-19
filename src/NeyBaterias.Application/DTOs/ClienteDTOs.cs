@@ -51,8 +51,7 @@ public class CriarClienteFisicoDto
 
     public string? Complemento { get; set; }
 
-    [Required(ErrorMessage = "Cidade é obrigatória.")]
-    public string Cidade { get; set; } = string.Empty;
+    public string? Cidade { get; set; }
 }
 
 public class CriarClienteJuridicoDto
@@ -88,8 +87,7 @@ public class AtualizarClienteFisicoDto
 
     public string? Complemento { get; set; }
 
-    [Required(ErrorMessage = "Cidade é obrigatória.")]
-    public string Cidade { get; set; } = string.Empty;
+    public string? Cidade { get; set; }
 }
 
 public class AtualizarClienteJuridicoDto

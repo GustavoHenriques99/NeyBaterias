@@ -38,7 +38,7 @@ public class ClienteFisicoConfiguration : IEntityTypeConfiguration<ClienteFisico
         builder.Property(cf => cf.Cep).HasMaxLength(9);
         builder.Property(cf => cf.Endereco).HasMaxLength(200).IsRequired();
         builder.Property(cf => cf.Numero).IsRequired();
-        builder.Property(cf => cf.Cidade).HasMaxLength(100).IsRequired();
+        builder.Property(cf => cf.Cidade).HasMaxLength(100);
 
         builder.HasIndex(cf => cf.Cpf).IsUnique();
         builder.HasIndex(cf => cf.IdCliente).IsUnique();

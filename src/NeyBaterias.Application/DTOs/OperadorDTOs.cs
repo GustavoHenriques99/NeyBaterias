@@ -47,3 +47,10 @@ public class AlterarSenhaDto
     public string SenhaAtual { get; set; } = string.Empty;
     public string NovaSenha { get; set; } = string.Empty;
 }
+
+// Usado pelo Administrador para redefinir a senha de outro operador
+// (sem precisar saber a senha atual dele) — fluxo de "esqueci minha senha".
+public class RedefinirSenhaDto
+{
+    public string NovaSenha { get; set; } = string.Empty;
+}

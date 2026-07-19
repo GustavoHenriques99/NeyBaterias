@@ -12,10 +12,39 @@ function headersComAuth(extra = {}) {
   };
 }
 
+// Lê a data de expiração (claim "exp") de dentro do próprio token, sem precisar
+// perguntar pro servidor — isso permite detectar sessão expirada na hora de
+// navegar, sem esperar uma chamada de API falhar primeiro.
+function tokenExpirado(token) {
+  if (!token) return true;
+  try {
+    const payloadBase64 = token.split(".")[1];
+    const payload = JSON.parse(atob(payloadBase64.replace(/-/g, "+").replace(/_/g, "/")));
+    if (!payload.exp) return false;
+    return Date.now() >= payload.exp * 1000;
+  } catch {
+    return true;
+  }
+}
+
+// Chamado sempre que uma requisição volta 401 (token ausente, inválido ou
+// expirado) — limpa a sessão e manda o usuário de volta pro login.
+function tratarSessaoExpirada() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("usuario");
+  if (window.location.pathname !== "/login") {
+    window.location.href = "/login?sessaoExpirada=1";
+  }
+}
+
 async function get(endpoint) {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     headers: headersComAuth(),
   });
+  if (response.status === 401) {
+    tratarSessaoExpirada();
+    throw new Error("Sessão expirada. Faça login novamente.");
+  }
   if (!response.ok) {
     throw new Error(`Erro ao buscar ${endpoint}`);
   }
@@ -29,6 +58,11 @@ async function post(endpoint, dados) {
     headers: headersComAuth({ "Content-Type": "application/json" }),
     body: JSON.stringify(dados),
   });
+
+  if (response.status === 401) {
+    tratarSessaoExpirada();
+    throw new Error("Sessão expirada. Faça login novamente.");
+  }
 
   if (!response.ok) {
     const erro = await response.json().catch(() => null);
@@ -68,7 +102,13 @@ export function getUsuarioLogado() {
 }
 
 export function estaAutenticado() {
-  return Boolean(getToken());
+  const token = getToken();
+  if (!token) return false;
+  if (tokenExpirado(token)) {
+    tratarSessaoExpirada();
+    return false;
+  }
+  return true;
 }
 
 
@@ -174,6 +214,11 @@ async function put(endpoint, dados) {
     body: JSON.stringify(dados),
   });
 
+  if (response.status === 401) {
+    tratarSessaoExpirada();
+    throw new Error("Sessão expirada. Faça login novamente.");
+  }
+
   if (!response.ok) {
     const erro = await response.json().catch(() => null);
     throw new Error(erro?.erro || erro?.title || `Erro ao atualizar em ${endpoint}`);
@@ -194,6 +239,10 @@ export function ativarOperador(id) {
 
 export function desativarOperador(id) {
   return put(`/operador/${id}/desativar`);
+}
+
+export function redefinirSenhaOperador(id, novaSenha) {
+  return put(`/operador/${id}/redefinir-senha`, { novaSenha });
 }
 
 // Formas de pagamento
@@ -229,6 +278,11 @@ async function del(endpoint) {
     method: "DELETE",
     headers: headersComAuth(),
   });
+
+  if (response.status === 401) {
+    tratarSessaoExpirada();
+    throw new Error("Sessão expirada. Faça login novamente.");
+  }
 
   if (!response.ok) {
     const erro = await response.json().catch(() => null);
