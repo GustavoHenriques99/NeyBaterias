@@ -205,8 +205,10 @@ function AbaOperadores() {
                 onChange={handleChange}
                 className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value={1}>1 - Operador</option>
-                <option value={2}>2 - Administrador</option>
+                <option value={1}>1 - Ler</option>
+                <option value={2}>2 - Ler, Cadastrar</option>
+                <option value={3}>3 - Ler, Cadastrar, Atualizar, Excluir</option>
+                <option value={4}>4 - Administrador (acesso total)</option>
               </select>
             </div>
           </div>
