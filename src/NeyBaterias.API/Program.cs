@@ -14,7 +14,7 @@ builder.Services.AddControllers()
         }
     );
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddEndpointsApiExplorer();.;c              bbbbbxs
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "NeyBaterias API", Version = "v1" });
@@ -90,8 +90,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Nivel3", policy =>
         policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 3));
 
-    //options.AddPolicy("Nivel4", policy =>
-        //policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 4));
+    options.AddPolicy("Nivel4", policy =>
+        policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 4));
 
     // Mantido como sinônimo de Nivel4 para não quebrar código existente que
     // ainda referencia "Administrador" diretamente.
