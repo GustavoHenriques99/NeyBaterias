@@ -99,6 +99,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAssertion(context => NivelAcessoDoUsuario(context.User) >= 4));
 });
 
+
 static int NivelAcessoDoUsuario(System.Security.Claims.ClaimsPrincipal user)
 {
     var claim = user.FindFirst("nivelAcesso");
