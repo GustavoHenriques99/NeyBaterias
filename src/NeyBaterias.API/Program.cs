@@ -14,7 +14,7 @@ builder.Services.AddControllers()
         }
     );
 
-builder.Services.AddEndpointsApiExplorer();.;c              bbbbbxs
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "NeyBaterias API", Version = "v1" });
